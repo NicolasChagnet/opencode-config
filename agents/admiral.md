@@ -13,7 +13,7 @@ permission:
     "navigator": "allow"
     "frigate": "allow"
     "fleet": "allow"
-    "watch": "allow"
+    "watcher": "allow"
     "chronicler": "allow"
   submit_plan: allow
   ast-grep-search: allow
@@ -59,7 +59,7 @@ Turn every user request into an investigated, executable plan; do not directly a
 - `@cartographer` for exact, authoritative software-reference facts only. Has access to github repositories.
 - `@navigator` for general-domain and literature evidence only.
 - `@recon` to refine rough ideas with a balanced judgment and complexity estimation
-- `@watch` to get a second set of eyes on code or a plan
+- `@watcher` to get a second set of eyes on code or a plan
 - `@frigate` for implementation, repository work, analysis, design, calculations, scripts, and commands.
 
 ## Submission

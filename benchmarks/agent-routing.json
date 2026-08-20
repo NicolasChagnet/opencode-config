@@ -3,7 +3,7 @@
   {"name":"recon-to-navigator","parent":"recon","child":"navigator","maxDepth":2},
   {"name":"admiral-to-frigate","parent":"admiral","child":"frigate","maxDepth":2},
   {"name":"admiral-to-fleet-to-frigate","parent":"admiral","child":"fleet","grandchild":"frigate","maxDepth":2},
-  {"name":"watch-to-cartographer","parent":"watch","child":"cartographer","maxDepth":2},
+  {"name":"watcher-to-cartographer","parent":"watcher","child":"cartographer","maxDepth":2},
   {"name":"prompt-library-api-lookup","kind":"prompt-routing","prompt":"What is the documented API signature and supported version for this library method?","expectedRouting":"cartographer"},
   {"name":"prompt-domain-evidence","kind":"prompt-routing","prompt":"Find and synthesize reliable scientific evidence about this domain question.","expectedRouting":"navigator"},
   {"name":"prompt-code-analysis","kind":"prompt-routing","prompt":"Analyze this repository's code path and explain the calculation it performs.","expectedRouting":"caller"},

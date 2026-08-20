@@ -10,7 +10,7 @@ permission:
     "*": deny
     "cartographer": "allow"
     "navigator": "allow"
-    "watch": "allow"
+    "watcher": "allow"
     "frigate": "allow"
   skill:
     "*": deny

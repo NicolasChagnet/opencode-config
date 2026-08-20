@@ -102,7 +102,7 @@ OpenCode after adding, changing, or deleting aliases.
 | Tutor | Teaches concepts with structured explanations and practice. |
 | Cartographer | Retrieves exact software documentation facts. |
 | Navigator | Researches general-domain and literature evidence. |
-| Watch | Reviews changes for correctness, security, architecture, and complexity. |
+| Watcher | Reviews changes for correctness, security, architecture, and complexity. |
 | Chronicler | Writes concise documentation and other publication-ready prose. |
 
 The general workflow is 
@@ -113,7 +113,7 @@ Recon: optional, refines idea, suggests paths (high temperature)
   -> Plannotator UI: edit plan, leave feedback, return to Admiral or approve plan
   -> Fleet: reads plan, delegates to independent subagents with their own context
     -> Frigate subagents: implement each step (parallel or sequential)
-    -> Watch: review changes using a different model, approves or suggests changes
+    -> Watcher: review changes using a different model, approves or suggests changes
 ```
 This is a loop workflow, each step can generally loop back to the previous one for refinement, and some steps can be skipped on simpler task (`Admiral -> Frigate` directly or even just call `Frigate` for a simple action).
 Each agent is also allowed to use `Cartographer` and `Navigator` to fetch external knowledge, and `Chronicler` to generate human-targeted content.
