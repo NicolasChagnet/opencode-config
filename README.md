@@ -5,7 +5,9 @@ skills, plugins, and model aliases.
 
 ## Install
 
-Clone it into the global OpenCode configuration directory, including its
+First [install opencode](https://opencode.ai/docs/#install).
+
+Then clone this repo into the global OpenCode configuration directory, including its
 submodules:
 
 ```sh
