@@ -73,15 +73,21 @@ OpenCode after adding, changing, or deleting aliases.
 The general workflow is 
 
 ```
-Recon (optional, refine idea) -> Admiral (create plan) -> Plannotator (feedback to Admiral or approve) -> Fleet -> Frigate subagents -> Watch or `code-review` command.
+Recon: optional, refines idea, suggests paths (high temperature)
+  -> Admiral: creates plan, each step having a specific scope and verification process
+  -> Plannotator UI: edit plan, leave feedback, return to Admiral or approve plan
+  -> Fleet: reads plan, delegates to independent subagents with their own context
+    -> Frigate subagents: implement each step (parallel or sequential)
+    -> Watch: review changes using a different model, approves or suggests changes
 ```
 This is a loop workflow, each step can generally loop back to the previous one for refinement, and some steps can be skipped on simpler task (`Admiral -> Frigate` directly or even just call `Frigate` for a simple action).
 Each agent is also allowed to use `Cartographer` and `Navigator` to fetch external knowledge, and `Chronicler` to generate human-targeted content.
 
 ## Plannotator
 
-The Plannotator plugin is configured with `workflow: user-managed`. Its browser
-sessions return their feedback to this conversation:
+The Plannotator plugin is configured with `workflow: user-managed`. This tool introduces a web interface to annotate, review, edit and approve plans and code diffs.
+**This is a crucial part of the workflow: the human remains in the loop at these crucial stages!**
+Its browser sessions return their feedback to this conversation:
 
 - `/annotate` — annotate a file, folder, or URL.
 - `/annotate-last` — annotate the latest assistant message.
