@@ -21,6 +21,41 @@ git submodule update --init --recursive
 Restart OpenCode after changing configuration, agents, skills, plugins, or
 aliases.
 
+## MCP servers
+
+### Github MCP server
+
+Both GitHub MCP connections use `https://api.githubcopilot.com/mcp/` which requires a PAT with the following permissions:
+
+| Scope | Permissions | Description |
+| --- | --- | --- |
+| Contents | Read and write (or Read-only) | Reading code, directory structure, files, creating/updating branches and commits |
+| Pull requests | Read and write (or Read-only) | Listing, searching, viewing diffs, creating/commenting on PRs |
+| Issues | Read and write (or Read-only) | Creating, searching, reading, and updating issue threads |
+| Discussions | Read-only | Reading discussion threads and comments (if used) |
+| Commit statuses | Read-only | Checking CI/CD status on commits/PRs |
+| Actions / Workflows | Read-only (optional) | Inspecting GitHub Actions workflows and run logs |
+| Metadata | Read-only | (Automatically granted) Required to query repository metadata |
+
+
+Place the PAT inside the gitignored file `.github_token`.
+
+The following agents use the the github MCP server:
+- **Frigate** uses the `github` server and has full GitHub MCP access.
+- **Cartographer** uses only `github-readonly`, limited to
+  `get_file_contents`, `search_code`, and `get_repository_tree`. The server
+  advertises readonly mode and Cartographer has no write access.
+
+### Context7
+
+Standard MCP server to access API and documentation of common libraries in a clean way. Use `opencode mcp auth context7` before first launch to authenticate (e.g. using your Github account).
+
+Used by **Cartographer** to pull relevant information about libraries and APIs.
+
+## Arxiv and paper-search
+
+Both are used by **Navigator** to find more academic information in research papers, etc. No particular authentication needed.
+
 ## Model aliases
 
 This configuration uses the aliases `lightweight`, `balanced`, `reviewer`, and

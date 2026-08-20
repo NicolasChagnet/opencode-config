@@ -4,6 +4,7 @@ mode: all
 model: lightweight
 temperature: 0.2
 permission:
+  github_*: allow
   edit: allow
   bash: allow
   skill:

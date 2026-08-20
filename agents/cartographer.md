@@ -3,6 +3,9 @@ description: Cartographer, the software-reference agent, retrieves exact authori
 mode: subagent
 model: lightweight
 permission:
+  github-readonly_get_file_contents: allow
+  github-readonly_search_code: allow
+  github-readonly_get_repository_tree: allow
   edit: deny
   bash: deny
   webfetch: allow

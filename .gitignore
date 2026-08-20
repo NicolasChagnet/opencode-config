@@ -4,3 +4,4 @@ package-lock.json
 bun.lock
 .gitignore
 model-aliases.json
+.github_token

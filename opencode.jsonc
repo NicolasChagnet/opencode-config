@@ -16,13 +16,25 @@
     "arxiv": {
       "type": "local",
       "command": ["uvx", "arxiv-mcp-server"]
+    },
+    "github": {
+      "type": "remote",
+      "url": "https://api.githubcopilot.com/mcp/",
+      "enabled": true,
+      "headers": {
+        "Authorization": "Bearer {file:.github_token}"
+      }
+    },
+    "github-readonly": {
+      "type": "remote",
+      "url": "https://api.githubcopilot.com/mcp/",
+      "enabled": true,
+      "headers": {
+        "Authorization": "Bearer {file:.github_token}",
+        "X-MCP-Tools": "get_file_contents,search_code,get_repository_tree",
+        "X-MCP-Readonly": "true"
+      }
     }
-  },
-  "tools": {
-    "context7*": false,
-    "paper-search*": false,
-    "arxiv*": false,
-    "codegraph*": false
   },
   "agent": {
     // All built-in agents disabled; custom naval agents replace them.
@@ -80,6 +92,12 @@
   "subagent_depth": 2,
   // Fine-tune tool permissions per agent
   "permission": {
+    "context7_*": "deny",
+    "paper-search_*": "deny",
+    "arxiv_*": "deny",
+    "codegraph_*": "deny",
+    "github_*": "deny",
+    "github-readonly_*": "deny",
     "skill": {
       "*": "deny",
       "skill-creator": "allow",
