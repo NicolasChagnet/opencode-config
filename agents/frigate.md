@@ -1,6 +1,6 @@
 ---
 description: General-purpose coding agent. Implements changes, fixes bugs, refactors, writes tests, runs scripts and commands. Keeps AGENTS.md and repo docs in sync.
-mode: primary
+mode: all
 model: lightweight
 temperature: 0.2
 permission:

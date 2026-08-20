@@ -1,6 +1,6 @@
 ---
 description: Generates ideas, alternative approaches, and novel ways to solve a problem. Read-only, high temperature.
-mode: primary
+mode: all
 model: balanced
 temperature: 1.2
 permission:

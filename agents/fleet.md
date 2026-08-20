@@ -6,7 +6,6 @@ temperature: 0.2
 permission:
   edit: deny
   bash: allow
-  subagents: allow
   task:
     "*": deny
     "cartographer": "allow"
