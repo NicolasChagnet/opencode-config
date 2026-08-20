@@ -1,0 +1,100 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "lightweight",
+  // Repo-local MCP example: the current agent calls a granted workspace lookup tool directly;
+  // tool availability alone does not route a request to a research specialist.
+  "mcp": {
+    "context7": {
+      "type": "remote",
+      "url": "https://mcp.context7.com/mcp/oauth",
+      "enabled": true
+    },
+    "paper-search": {
+      "type": "local",
+      "command": ["uvx", "paper-search-mcp"]
+    },
+    "arxiv": {
+      "type": "local",
+      "command": ["uvx", "arxiv-mcp-server"]
+    }
+  },
+  "tools": {
+    "context7*": false,
+    "paper-search*": false,
+    "arxiv*": false,
+    "codegraph*": false
+  },
+  "agent": {
+    // All built-in agents disabled; custom naval agents replace them.
+    "build": {
+      "disable": true
+    },
+    "plan": {
+      "disable": true
+    },
+    "general": {
+      "disable": true
+    },
+    "explore": {
+      "disable": true
+    },
+    "scout": {
+      "disable": true
+    }
+  },
+  "command": {
+    "fix-all": {
+      "description": "Run linter and tests, fix all errors",
+      "agent": "frigate",
+      "template": "1. Run the project-defined linters. Fix all errors you find.\n2. Run the project test suite. For failing tests, consider whether the codebase or the test suite drifted, and suggest appropriate fixes."
+    },
+    "describe": {
+      "description": "Add a description to the current revision",
+      "agent": "frigate",
+      "template": "Write a description for the current jujutsu revision using `jj desc -m \"DESCRIPTION\"`.\nBase that description from the user input (OPTION): \"$1\"\nand from the diff of the current revision accessible via `jj diff -f @- -t @ --git --no-pager`\n\nDo not use the user input verbatim (it's a guideline). Focus on the why, not the what!\nUse conventional commits."
+    },
+    "annotate": {
+      "description": "Open interactive annotation UI for a file, folder, or URL",
+      "template": ""
+    },
+    "annotate-last": {
+      "description": "Annotate the last assistant message",
+      "template": ""
+    },
+    "code-review": {
+      "description": "Open interactive code review for current changes or a PR URL; pass --git or --gitbutler to force that provider",
+      "template": ""
+    },
+    "split": {
+      "description": "Split a large change into mutliple consistent changes",
+      "agent": "frigate",
+      "template": "Using the jujutsu VCS, split the current revision into self-consistent changes using `jj split`.\nDo not just split per file, instead follow this plan:\n\n1. Summarize all changes in the revision.\n2. Estimate how many clusters of changes there are: this will be the final number of revisions.\n3. Assign each change to a cluster, inside its own jujutsu revision, by recursively splitting."
+    },
+    "update-instructions": {
+      "description": "Generate or update the nearest applicable AGENTS.md.",
+      "agent": "frigate",
+      "template": "Create or update the nearest applicable AGENTS.md for this project. First inspect the current project structure, development tooling, conventions, and existing AGENTS.md files. Preserve accurate existing guidance; do not overwrite user-authored rules without explaining the conflict. Record only durable facts: project structure, development guidelines/style, and recurring user preferences. Keep it concise and actionable. Validate every documented command or path when practical. If scope is unclear, ask whether to update the repository root AGENTS.md or a nested one. User request: $ARGUMENTS"
+    }
+  },
+  "default_agent": "frigate",
+  "subagent_depth": 2,
+  // Fine-tune tool permissions per agent
+  "permission": {
+    "skill": {
+      "*": "deny",
+      "skill-creator": "allow",
+    },
+    "external_directory": {
+      "/tmp/": "allow",
+      "~/.plannotator": "allow"
+    },
+    "question": "allow"
+  },
+  "plugin": [
+    "@dietrichgebert/ponytail",
+    "./plugins/opencode-model-alias/src/index.ts",
+    ["@plannotator/opencode@latest", {
+      "workflow": "user-managed"
+    }]
+  ]
+}

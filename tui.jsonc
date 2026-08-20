@@ -1,0 +1,8 @@
+{
+  "$schema": "https://opencode.ai/tui.json",
+  // OpenCode Quota: tuiCommandDisplay chooses whether native TUI command output appears in the session transcript or a local popup dialog.
+  // OpenCode Quota: loads the TUI sidebar, compact status, and local commands.
+  "plugin": [
+    "@slkiser/opencode-quota@latest"
+  ]
+}

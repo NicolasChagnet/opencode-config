@@ -1,0 +1,6 @@
+{
+  "lightweight": "github-copilot/gpt-5.6-luna",
+  "balanced": "github-copilot/gpt-5.6-terra",
+  "reviewer": "github-copilot/gpt-5.4",
+  "pro": "github-copilot/gpt-5.6-sol"
+}
