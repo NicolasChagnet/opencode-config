@@ -89,9 +89,9 @@ The Plannotator plugin is configured with `workflow: user-managed`. This tool in
 **This is a crucial part of the workflow: the human remains in the loop at these crucial stages!**
 Its browser sessions return their feedback to this conversation:
 
-- `/annotate` — annotate a file, folder, or URL.
-- `/annotate-last` — annotate the latest assistant message.
-- `/code-review` — review the current changes or a pull-request URL.
+- `/plannotator-annotate` — annotate a file, folder, or URL.
+- `/plannotator-last` — annotate the latest assistant message.
+- `/plannotator-review` — review the current changes or a pull-request URL.
 
 Wait for the browser session to finish; returned annotations or review feedback
 are then addressed in the conversation.
@@ -102,9 +102,9 @@ are then addressed in the conversation.
 | --- | --- |
 | `/fix-all` | Run project linters and tests, then fix reported errors. |
 | `/describe` | Set a conventional-commit description for the current Jujutsu revision. |
-| `/annotate` | Open Plannotator to annotate a file, folder, or URL. |
-| `/annotate-last` | Open Plannotator to annotate the latest assistant message. |
-| `/code-review` | Review current changes or a pull-request URL in Plannotator. |
+| `/plannotator-annotate` | Open Plannotator to annotate a file, folder, or URL. |
+| `/plannotator-last` | Open Plannotator to annotate the latest assistant message. |
+| `/plannotator-review` | Review current changes or a pull-request URL in Plannotator. |
 | `/split` | Split the current Jujutsu revision into self-consistent changes. |
 | `/doc` | Create or update documentation. |
 

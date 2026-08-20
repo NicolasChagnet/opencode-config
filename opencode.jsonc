@@ -53,15 +53,15 @@
       "agent": "frigate",
       "template": "Write a description for the current jujutsu revision using `jj desc -m \"DESCRIPTION\"`.\nBase that description from the user input (OPTION): \"$1\"\nand from the diff of the current revision accessible via `jj diff -f @- -t @ --git --no-pager`\n\nDo not use the user input verbatim (it's a guideline). Focus on the why, not the what!\nUse conventional commits."
     },
-    "annotate": {
+    "plannotator-annotate": {
       "description": "Open interactive annotation UI for a file, folder, or URL",
       "template": ""
     },
-    "annotate-last": {
+    "plannotator-last": {
       "description": "Annotate the last assistant message",
       "template": ""
     },
-    "code-review": {
+    "plannotator-review": {
       "description": "Open interactive code review for current changes or a PR URL; pass --git or --gitbutler to force that provider",
       "template": ""
     },
