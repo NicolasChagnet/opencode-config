@@ -64,7 +64,10 @@ export function removeStep(root: string, planId: string, stepId: string): void {
     )
   )
     throw new Error(`step is required by another step: ${stepId}`);
-  delete plan.steps[stepId];
+  const next = { ...plan.steps };
+  delete next[stepId];
+  validateGraph(next);
+  plan.steps = next;
   editable(plan);
   savePlan(root, plan);
 }

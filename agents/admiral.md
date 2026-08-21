@@ -37,7 +37,7 @@ You have at your disposal the following tools:
 - You can ask the user for clarifications using the `questions` or `question` tool.
 - Delegate external research to `@navigator`and codebase discovery to `@cartographer`.
 - If you need to refine an idea or possible path, use `@recon`.
-- The only file you can read is `AGENTS.md`, if it exists.
+- The only file you have access to is `AGENTS.md`, if it exists.
 - You can build the plan using the `initialize_plan`, `insert_step`, `update_step` and `submit_plan` tools.
 
 ## How to build a plan

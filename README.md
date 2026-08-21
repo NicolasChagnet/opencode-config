@@ -144,8 +144,10 @@ Watcher -> none
 ## Plannotator
 
 The local `plan-tools` plugin provides structured plan storage and a mandatory
-human approval gate. Install the Plannotator CLI and ensure the `plannotator`
-command is on `PATH` before using `submit_plan`.
+human approval gate. The `review-tools` plugin owns `/code-review`, which runs
+the Plannotator code review and reports the result to the originating session
+without dispatching an agent. Install the Plannotator CLI and ensure the
+`plannotator` command is on `PATH` before using `submit_plan` or `/code-review`.
 
 The registered tools are:
 
@@ -187,6 +189,7 @@ The standalone Plannotator commands remain available:
 | `/plannotator-annotate` | Open Plannotator to annotate a file, folder, or URL. |
 | `/plannotator-last` | Open Plannotator to annotate the latest assistant message. |
 | `/plannotator-review` | Review current changes or a pull-request URL in Plannotator. |
+| `/code-review` | Run a Plannotator code review via the `review-tools` plugin; result is shown to the originating session with no agent dispatch. |
 | `/split` | Split the current version-control change into self-consistent changes, preferring Jujutsu when `.jj/` exists. |
 | `/doc` | Create or update documentation. |
 

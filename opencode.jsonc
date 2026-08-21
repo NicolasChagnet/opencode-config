@@ -124,6 +124,7 @@
     "./plugins/opencode-model-alias/src/index.ts",
     ["./plugins/plan-tools/src/index.ts", {
       "approval_agent": "fleet"
-    }]
+    }],
+    "./plugins/review-tools/src/index.ts"
   ]
 }

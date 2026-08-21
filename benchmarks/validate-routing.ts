@@ -5,7 +5,7 @@ const scenarios = JSON.parse(readFileSync(new URL("./agent-routing.json", import
 const agents = config.agent
 const root = new URL("..", import.meta.url)
 const opencodeConfig = readFileSync(new URL("opencode.jsonc", root), "utf8")
-const planTools = readFileSync(new URL("plugins/plan-tools/src/index.ts", root), "utf8") + readFileSync(new URL("plugins/plan-tools/src/review.ts", root), "utf8") + readFileSync(new URL("plugins/plan-tools/src/hooks.ts", root), "utf8")
+const reviewTools = readFileSync(new URL("plugins/review-tools/src/index.ts", root), "utf8") + readFileSync(new URL("plugins/review-tools/src/review.ts", root), "utf8") + readFileSync(new URL("plugins/review-tools/src/hooks.ts", root), "utf8")
 
 const matches = (pattern: string, value: string) => pattern === value || (pattern.endsWith("*") && value.startsWith(pattern.slice(0, -1)))
 const allow = (agent: string, child: string) => Object.entries(agents[agent]?.permission?.task ?? {})
@@ -68,8 +68,8 @@ for (const [parent, children] of Object.entries(boundaries)) {
   }
 }
 
-checks.push({ name: "code-review-hook-registered", pass: opencodeConfig.includes('"code-review"') && opencodeConfig.includes("__opencode_plan_tools_code_review__") && planTools.includes('"command.execute.before"') })
-checks.push({ name: "code-review-origin-session-boundary", pass: planTools.includes("Code review approved. No agent was dispatched.") && planTools.includes("Code-review feedback from Plannotator") && planTools.includes("ignored: true") && planTools.includes("reviewPromptLimit") && agents.watcher?.permission?.task?.["*"] === "deny" && agents.watcher?.permission?.subagent === "deny" })
+checks.push({ name: "code-review-hook-registered", pass: opencodeConfig.includes('"code-review"') && opencodeConfig.includes("__opencode_plan_tools_code_review__") && reviewTools.includes('"command.execute.before"') })
+checks.push({ name: "code-review-origin-session-boundary", pass: reviewTools.includes("Code review approved. No agent was dispatched.") && reviewTools.includes("Code-review feedback from Plannotator") && reviewTools.includes("ignored: true") && reviewTools.includes("reviewPromptLimit") && agents.watcher?.permission?.task?.["*"] === "deny" && agents.watcher?.permission?.subagent === "deny" })
 
 console.log(JSON.stringify(checks, null, 2))
 if (checks.some((check) => !check.pass)) process.exit(1)

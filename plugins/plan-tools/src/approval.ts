@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { loadPlan, savePlan } from "./storage.js";
-import { validateGraph } from "./validation.js";
+import { parsePlannotatorDecision, validateGraph } from "./validation.js";
 import type {
   ApprovalRuntime,
   Plan,
@@ -39,43 +39,8 @@ const markdown = (plan: Plan) =>
 export type PlannotatorAnnotateResult =
   { approved: true; feedback?: string } | { approved: false; feedback: string };
 
-export function parsePlannotatorAnnotate(
-  value: unknown,
-): PlannotatorAnnotateResult {
-  if (typeof value === "string") {
-    try {
-      value = JSON.parse(value);
-    } catch (error) {
-      throw new Error("invalid Plannotator approval result", { cause: error });
-    }
-  }
-  if (!value || typeof value !== "object")
-    throw new Error("invalid Plannotator approval result");
-  const result = value as {
-    approved?: unknown;
-    decision?: unknown;
-    feedback?: unknown;
-  };
-  if (result.feedback !== undefined && typeof result.feedback !== "string")
-    throw new Error("invalid Plannotator feedback");
-  const feedback =
-    typeof result.feedback === "string" ? result.feedback.trim() : "";
-  const approved =
-    typeof result.approved === "boolean"
-      ? result.approved
-      : result.decision === "approved"
-        ? true
-        : result.decision === "dismissed" || result.decision === "annotated"
-          ? false
-          : undefined;
-  if (approved === undefined)
-    throw new Error("invalid Plannotator approval result");
-  if (!approved && !feedback)
-    throw new Error("Plannotator feedback is missing");
-  return approved
-    ? { approved: true, ...(feedback ? { feedback } : {}) }
-    : { approved: false, feedback };
-}
+export const parsePlannotatorAnnotate = (value: unknown) =>
+  parsePlannotatorDecision(value, "approval");
 
 export async function submitPlanWithApproval(
   root: string,

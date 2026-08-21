@@ -1,5 +1,49 @@
 import type { Step } from "./types.js";
 
+export type PlannotatorDecision =
+  | { approved: true; feedback?: string }
+  | { approved: false; feedback: string };
+
+/** Normalize Plannotator's approved/decision + feedback envelope. */
+export function parsePlannotatorDecision(
+  value: unknown,
+  label: string,
+): PlannotatorDecision {
+  if (typeof value === "string") {
+    try {
+      value = JSON.parse(value);
+    } catch (error) {
+      throw new Error(`invalid Plannotator ${label} result`, { cause: error });
+    }
+  }
+  if (!value || typeof value !== "object")
+    throw new Error(`invalid Plannotator ${label} result`);
+  const result = value as {
+    approved?: unknown;
+    decision?: unknown;
+    feedback?: unknown;
+  };
+  if (result.feedback !== undefined && typeof result.feedback !== "string")
+    throw new Error(`invalid Plannotator ${label} feedback`);
+  const feedback =
+    typeof result.feedback === "string" ? result.feedback.trim() : "";
+  const approved =
+    typeof result.approved === "boolean"
+      ? result.approved
+      : result.decision === "approved"
+        ? true
+        : result.decision === "dismissed" || result.decision === "annotated"
+          ? false
+          : undefined;
+  if (approved === undefined)
+    throw new Error(`invalid Plannotator ${label} result`);
+  if (!approved && !feedback)
+    throw new Error(`Plannotator ${label} feedback is missing`);
+  return approved
+    ? { approved: true, ...(feedback ? { feedback } : {}) }
+    : { approved: false, feedback };
+}
+
 export const requiredText = (value: unknown, field: string): string => {
   if (typeof value !== "string" || !value.trim())
     throw new Error(`${field} must be a non-empty string`);
