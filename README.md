@@ -42,17 +42,16 @@ Both GitHub MCP connections use `https://api.githubcopilot.com/mcp/` which requi
 
 Place the PAT inside the gitignored file `.github_token`.
 
-The following agents use the the github MCP server:
+The following agents use the GitHub MCP servers:
 - **Frigate** uses the `github` server and has full GitHub MCP access.
-- **Cartographer** uses only `github-readonly`, limited to
-  `get_file_contents`, `search_code`, and `get_repository_tree`. The server
-  advertises readonly mode and Cartographer has no write access.
+- **Navigator** uses only `github-readonly`, limited to the advertised
+  read-only tools.
 
 ### Context7
 
 Standard MCP server to access API and documentation of common libraries in a clean way. Use `opencode mcp auth context7` before first launch to authenticate (e.g. using your Github account).
 
-Used by **Cartographer** to pull relevant information about libraries and APIs.
+Available for external research when granted to an agent.
 
 ## Arxiv and paper-search
 
@@ -95,30 +94,52 @@ OpenCode after adding, changing, or deleting aliases.
 
 ## Agents
 
+The default agent is `jack`. The built-in `build`, `plan`, `general`,
+`explore`, and `scout` agents are disabled.
+
 | Agent | Role |
 | --- | --- |
-| Admiral | Breaks work into ordered, verifiable plans, editable with plannotator. |
-| Fleet | Orchestrates implementation across Frigate agents. |
-| Frigate | Implements and verifies repository changes. **Main actor!** |
-| Recon | Explores alternatives and complexity before implementation. |
-| Tutor | Teaches concepts with structured explanations and practice. |
-| Cartographer | Retrieves exact software documentation facts. |
-| Navigator | Researches general-domain and literature evidence. |
-| Watcher | Reviews changes for correctness, security, architecture, and complexity. |
-| Chronicler | Writes concise documentation and other publication-ready prose. |
+| Jack | Lightweight primary implementation agent for clear, low-risk work. Works directly, cannot delegate, and escalates unclear scope, design, or verification. |
+| Admiral | Planning-only primary agent. Produces dependency-declared, ordered, verifiable `Step N` plans; may delegate repository discovery to Surveyor and external research to Navigator. |
+| Fleet | Non-editing orchestrator. Validates the dependency graph, schedules topological waves, dispatches Frigate after dependencies succeed, blocks failed descendants, and invokes Watcher once after executable work. |
+| Frigate | General-purpose coding agent and main implementation actor. Can edit, run Bash, and delegate to Navigator or Chronicler. |
+| Surveyor | Read-only local repository discovery. |
+| Navigator | Read-only external research for authoritative software documentation, GitHub sources, web sources, and academic sources. |
+| Watcher | Read-only review for correctness, architecture, security, maintainability, and over-engineering. |
+| Chronicler | Tool-free, read-only drafting agent for publication-ready prose from a supplied verified brief. |
+| Recon | Read-only brainstorming agent; may delegate external research to Navigator. |
+| Tutor | Teaches concepts through structured explanations and practice. |
 
-The general workflow is 
+Use Jack directly for simple, clear, low-risk work. The planned workflow is:
 
 ```
-Recon: optional, refines idea, suggests paths (high temperature)
-  -> Admiral: creates plan, each step having a specific scope and verification process
-  -> Plannotator UI: edit plan, leave feedback, return to Admiral or approve plan
-  -> Fleet: reads plan, delegates to independent subagents with their own context
-    -> Frigate subagents: implement each step (parallel or sequential)
-    -> Watcher: review changes using a different model, approves or suggests changes
+Admiral -> human plan approval (Plannotator) -> Fleet
 ```
-This is a loop workflow, each step can generally loop back to the previous one for refinement, and some steps can be skipped on simpler task (`Admiral -> Frigate` directly or even just call `Frigate` for a simple action).
-Each agent is also allowed to use `Cartographer` and `Navigator` to fetch external knowledge, and `Chronicler` to generate human-targeted content.
+
+Admiral's plan gives every step a dependency-declared contract:
+
+```text
+Step N
+Depends on
+Goal
+Scope
+Implementation
+Verification
+```
+
+Dependencies cover logic, verification, and conflicts over mutable scope. Fleet
+manually derives topological ready sets, runs them in waves, dispatches Frigate
+only after dependencies succeed, blocks descendants of failed steps, and
+invokes Watcher once after at least one executable step succeeds.
+
+Routing boundaries are fixed:
+
+```text
+Admiral -> Surveyor, Navigator
+Fleet   -> Frigate, Watcher
+Frigate -> Navigator, Chronicler
+Watcher -> none
+```
 
 ## Plannotator
 

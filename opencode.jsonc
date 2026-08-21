@@ -1,8 +1,8 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "model": "lightweight",
-  // Repo-local MCP example: the current agent calls a granted workspace lookup tool directly;
-  // tool availability alone does not route a request to a research specialist.
+  // Research agents may use only explicitly granted external MCP tools;
+  // local repository work remains with the caller or Cartographer.
   "mcp": {
     "context7": {
       "type": "remote",
@@ -16,6 +16,15 @@
     "arxiv": {
       "type": "local",
       "command": ["uvx", "arxiv-mcp-server"]
+    },
+    "codegraph": {
+      "type": "local",
+      "command": [
+        "codegraph",
+        "serve",
+        "--mcp"
+      ],
+      "enabled": true
     },
     "github": {
       "type": "remote",
@@ -88,7 +97,7 @@
       "template": "Create or update the nearest applicable AGENTS.md for this project. First inspect the current project structure, development tooling, conventions, and existing AGENTS.md files. Preserve accurate existing guidance; do not overwrite user-authored rules without explaining the conflict. Record only durable facts: project structure, development guidelines/style, and recurring user preferences. Keep it concise and actionable. Validate every documented command or path when practical. If scope is unclear, ask whether to update the repository root AGENTS.md or a nested one. User request: $ARGUMENTS"
     }
   },
-  "default_agent": "frigate",
+  "default_agent": "jack",
   "subagent_depth": 2,
   // Fine-tune tool permissions per agent
   "permission": {
