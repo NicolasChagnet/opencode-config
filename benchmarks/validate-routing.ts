@@ -7,6 +7,10 @@ const agents = config.agent
 const allow = (agent: string, child: string) => agents[agent]?.permission?.task?.[child] === "allow"
 const checks = scenarios.map((scenario: any) => {
   if (scenario.kind === "prompt-routing") return { name: scenario.name, pass: true }
+  if (scenario.kind === "tool-boundary") {
+    const permission = agents[scenario.agent]?.permission ?? {}
+    return { name: scenario.name, pass: scenario.tools.every((tool: string) => permission[tool] === "allow") }
+  }
   const chain = scenario.expectedAllow === false
     ? !allow(scenario.parent, scenario.child)
     : scenario.grandchild

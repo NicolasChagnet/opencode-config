@@ -129,8 +129,8 @@
   "plugin": [
     "@dietrichgebert/ponytail",
     "./plugins/opencode-model-alias/src/index.ts",
-    ["@plannotator/opencode@latest", {
-      "workflow": "user-managed"
+    ["./plugins/plan-tools/src/index.ts", {
+      "approval_agent": "fleet"
     }]
   ]
 }

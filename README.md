@@ -143,16 +143,39 @@ Watcher -> none
 
 ## Plannotator
 
-The Plannotator plugin is configured with `workflow: user-managed`. This tool introduces a web interface to annotate, review, edit and approve plans and code diffs.
-**This is a crucial part of the workflow: the human remains in the loop at these crucial stages!**
-Its browser sessions return their feedback to this conversation:
+The local `plan-tools` plugin provides structured plan storage and a mandatory
+human approval gate. Install the Plannotator CLI and ensure the `plannotator`
+command is on `PATH` before using `submit_plan`.
+
+The registered tools are:
+
+| Tool | Purpose |
+| --- | --- |
+| `initialize_plan` | Create a project-scoped plan draft by plan ID. |
+| `insert_step` | Add a dependency-declared step to the draft. |
+| `update_step` | Update a draft step. |
+| `submit_plan` | Render the revision and open the Plannotator approval gate. |
+| `read_plan` | Read the approved revision. |
+| `read_plan_step` | Read one step from the approved revision. |
+
+Plans use `plan-id@revision` syntax. `initialize_plan` starts revision 1;
+editing an approved plan creates a new revision and invalidates the previous
+approval. `submit_plan` is not execution: the human must approve the rendered
+Markdown artifact before Fleet can hand the approved plan to an executor.
+Denied or failed submissions remain non-executable; correct the draft and
+submit it again.
+
+The source of truth is `.opencode/plan-tools.json`. The Markdown file under
+`.opencode/plan-artifacts/` is generated for approval. Same-session handoff is
+configurable in `opencode.jsonc` and
+defaults to Fleet (`approval_agent: "fleet"`). Fleet is the normal handoff
+path; do not launch it manually.
+
+The standalone Plannotator commands remain available:
 
 - `/plannotator-annotate` — annotate a file, folder, or URL.
 - `/plannotator-last` — annotate the latest assistant message.
 - `/plannotator-review` — review the current changes or a pull-request URL.
-
-Wait for the browser session to finish; returned annotations or review feedback
-are then addressed in the conversation.
 
 ## Commands
 
