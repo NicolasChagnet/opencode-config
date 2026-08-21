@@ -64,6 +64,16 @@
     }
   },
   "command": {
+    "ask-code": {
+      "description": "Answers questions about the codebase",
+      "agent": "cartographer",
+      "template": "Answer the user question using all the tools at your disposal: Question: $ARGUMENTS"
+    },
+    "ask-info": {
+      "description": "Answers questions about documentation, API and general knowledge",
+      "agent": "navigator",
+      "template": "Answer the user question using all the tools at your disposal: Question: $ARGUMENTS"
+    },
     "fix-all": {
       "description": "Run linter and tests, fix all errors",
       "agent": "frigate",
@@ -108,8 +118,7 @@
     "github_*": "deny",
     "github-readonly_*": "deny",
     "skill": {
-      "*": "deny",
-      "skill-creator": "allow",
+      "*": "deny"
     },
     "external_directory": {
       "/tmp/": "allow",

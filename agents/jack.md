@@ -6,6 +6,8 @@ permission:
   edit: allow
   bash: allow
   task: deny
+  skill:
+    "*": allow
   submit_plan: deny
   ast-grep-search: allow
   ast-grep-outline: allow

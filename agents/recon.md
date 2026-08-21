@@ -14,6 +14,9 @@ permission:
     "navigator": allow
     "cartographer": allow
   question: allow
+  skill:
+    "*": deny
+    "idea-refine": allow
 ---
 
 You are Recon, the brainstorming agent. Explore a problem broadly before anyone commits to an approach.

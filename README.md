@@ -100,14 +100,14 @@ The default agent is `jack`. The built-in `build`, `plan`, `general`,
 | Agent | Role |
 | --- | --- |
 | Jack | Lightweight primary implementation agent for clear, low-risk work. Works directly, cannot delegate, and escalates unclear scope, design, or verification. |
-| Admiral | Planning-only primary agent. Produces dependency-declared, ordered, verifiable `Step N` plans; may delegate repository discovery to Surveyor and external research to Navigator. |
+| Admiral | Planning-only primary agent. Produces dependency-declared, ordered, verifiable `Step N` plans; may delegate repository discovery to Cartographer and external research to Navigator. |
 | Fleet | Non-editing orchestrator. Validates the dependency graph, schedules topological waves, dispatches Frigate after dependencies succeed, blocks failed descendants, and invokes Watcher once after executable work. |
 | Frigate | General-purpose coding agent and main implementation actor. Can edit, run Bash, and delegate to Navigator or Chronicler. |
-| Surveyor | Read-only local repository discovery. |
+| Cartographer | Read-only local codebase explorer for tracing relevant paths, flows, conventions, and risks. |
 | Navigator | Read-only external research for authoritative software documentation, GitHub sources, web sources, and academic sources. |
 | Watcher | Read-only review for correctness, architecture, security, maintainability, and over-engineering. |
 | Chronicler | Tool-free, read-only drafting agent for publication-ready prose from a supplied verified brief. |
-| Recon | Read-only brainstorming agent; may delegate external research to Navigator. |
+| Recon | Read-only brainstorming agent; may delegate external research to Navigator and codebase exploration to Cartographer. |
 | Tutor | Teaches concepts through structured explanations and practice. |
 
 Use Jack directly for simple, clear, low-risk work. The planned workflow is:
@@ -135,7 +135,7 @@ invokes Watcher once after at least one executable step succeeds.
 Routing boundaries are fixed:
 
 ```text
-Admiral -> Surveyor, Navigator
+Admiral -> Cartographer, Navigator
 Fleet   -> Frigate, Watcher
 Frigate -> Navigator, Chronicler
 Watcher -> none
@@ -158,6 +158,8 @@ are then addressed in the conversation.
 
 | Command | Purpose |
 | --- | --- |
+| `/ask-code` | Answer questions about the local codebase using Cartographer. |
+| `/ask-info` | Answer documentation, API, and general-knowledge questions using Navigator. |
 | `/fix-all` | Run project linters and tests, then fix reported errors. |
 | `/describe` | Set a conventional-commit description for the current Jujutsu revision. |
 | `/plannotator-annotate` | Open Plannotator to annotate a file, folder, or URL. |
@@ -167,3 +169,6 @@ are then addressed in the conversation.
 | `/doc` | Create or update documentation. |
 
 `/alias` is provided by the model-alias plugin; it lists, sets, or deletes model aliases.
+
+The model-alias plugin is loaded from `./plugins/opencode-model-alias/src/index.ts`.
+Keep that plugin checkout present when using this configuration.

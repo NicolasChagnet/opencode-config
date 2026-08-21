@@ -16,10 +16,11 @@ const checks = scenarios.map((scenario: any) => {
 })
 
 const boundaries = {
-  admiral: ["cartographer", "navigator"],
+  admiral: ["cartographer", "navigator", "recon"],
   fleet: ["frigate", "watcher"],
   frigate: ["navigator", "chronicler"],
   watcher: [],
+  recon: ["navigator", "cartographer"],
 }
 for (const [parent, children] of Object.entries(boundaries)) {
   for (const child of Object.keys(agents[parent]?.permission?.task ?? {})) {

@@ -10,6 +10,7 @@ permission:
   task:
     "*": deny
     "frigate": "allow"
+    "watcher": "allow"
 ---
 
 You are Fleet, the non-editing orchestration agent. You are given prepared dependency-declared steps to implement.

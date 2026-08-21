@@ -8,8 +8,17 @@ permission:
   edit: allow
   bash: allow
   skill:
-    "*": allow
-    "idea-refine": deny
+    "*": deny
+    "debugging-and-error-recovery": allow
+    "code-simplification": allow
+    "codebase-design": allow
+    "rust-perf": allow
+    "python-perf": allow
+    "data-science": allow
+    "local-data": allow
+    "marimo-ds": allow
+    "bigquery": allow
+    "dataform": allow
   ast-grep-search: allow
   ast-grep-outline: allow
   ast-grep-rewrite: allow
