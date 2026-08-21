@@ -24,7 +24,8 @@
         "serve",
         "--mcp"
       ],
-      "enabled": true
+      // Opt in per project after creating a .codegraph index.
+      "enabled": false
     },
     "github": {
       "type": "remote",
@@ -82,29 +83,21 @@
     "describe": {
       "description": "Add a description to the current revision",
       "agent": "frigate",
-      "template": "Write a description for the current jujutsu revision using `jj desc -m \"DESCRIPTION\"`.\nBase that description from the user input (OPTION): \"$1\"\nand from the diff of the current revision accessible via `jj diff -f @- -t @ --git --no-pager`\n\nDo not use the user input verbatim (it's a guideline). Focus on the why, not the what!\nUse conventional commits."
-    },
-    "plannotator-annotate": {
-      "description": "Open interactive annotation UI for a file, folder, or URL",
-      "template": ""
-    },
-    "plannotator-last": {
-      "description": "Annotate the last assistant message",
-      "template": ""
-    },
-    "plannotator-review": {
-      "description": "Open interactive code review for current changes or a PR URL; pass --git or --gitbutler to force that provider",
-      "template": ""
+      "template": "Describe the current version-control change. First check whether `.jj/` exists; if it does, prefer Jujutsu commands such as `jj desc -m \"DESCRIPTION\"` and `jj diff -f @- -t @ --git --no-pager`. Otherwise detect and use the repository's native VCS commands.\nBase the description on the user input (OPTION): \"$1\" and the current diff.\n\nDo not use the user input verbatim (it's a guideline). Focus on why, not what. Use conventional commits when the repository uses them."
     },
     "split": {
       "description": "Split a large change into mutliple consistent changes",
       "agent": "frigate",
-      "template": "Using the jujutsu VCS, split the current revision into self-consistent changes using `jj split`.\nDo not just split per file, instead follow this plan:\n\n1. Summarize all changes in the revision.\n2. Estimate how many clusters of changes there are: this will be the final number of revisions.\n3. Assign each change to a cluster, inside its own jujutsu revision, by recursively splitting."
+      "template": "Split the current version-control change into self-consistent changes. First check whether `.jj/` exists; if it does, prefer Jujutsu and use `jj split`. Otherwise detect and use the repository's native VCS workflow.\nDo not split only by file; instead follow this plan:\n\n1. Summarize all changes.\n2. Estimate the number of coherent change clusters.\n3. Place each cluster in its own native VCS change, using recursive splitting or the equivalent workflow."
     },
     "update-instructions": {
       "description": "Generate or update the nearest applicable AGENTS.md.",
       "agent": "frigate",
       "template": "Create or update the nearest applicable AGENTS.md for this project. First inspect the current project structure, development tooling, conventions, and existing AGENTS.md files. Preserve accurate existing guidance; do not overwrite user-authored rules without explaining the conflict. Record only durable facts: project structure, development guidelines/style, and recurring user preferences. Keep it concise and actionable. Validate every documented command or path when practical. If scope is unclear, ask whether to update the repository root AGENTS.md or a nested one. User request: $ARGUMENTS"
+    },
+    "code-review": {
+      "description": "Run a Plannotator code review",
+      "template": "__opencode_plan_tools_code_review__"
     }
   },
   "default_agent": "jack",

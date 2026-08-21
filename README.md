@@ -108,7 +108,7 @@ The default agent is `jack`. The built-in `build`, `plan`, `general`,
 | Watcher | Read-only review for correctness, architecture, security, maintainability, and over-engineering. |
 | Chronicler | Tool-free, read-only drafting agent for publication-ready prose from a supplied verified brief. |
 | Recon | Read-only brainstorming agent; may delegate external research to Navigator and codebase exploration to Cartographer. |
-| Tutor | Teaches concepts through structured explanations and practice. |
+| Bosun | Teaches concepts through structured explanations and practice. |
 
 Use Jack directly for simple, clear, low-risk work. The planned workflow is:
 
@@ -135,7 +135,7 @@ invokes Watcher once after at least one executable step succeeds.
 Routing boundaries are fixed:
 
 ```text
-Admiral -> Cartographer, Navigator
+Admiral -> Cartographer, Navigator, Recon
 Fleet   -> Frigate, Watcher
 Frigate -> Navigator, Chronicler
 Watcher -> none
@@ -154,19 +154,18 @@ The registered tools are:
 | `initialize_plan` | Create a project-scoped plan draft by plan ID. |
 | `insert_step` | Add a dependency-declared step to the draft. |
 | `update_step` | Update a draft step. |
-| `submit_plan` | Render the revision and open the Plannotator approval gate. |
-| `read_plan` | Read the approved revision. |
-| `read_plan_step` | Read one step from the approved revision. |
+| `submit_plan` | Render the plan and open the Plannotator approval gate. |
+| `read_plan` | Read the approved plan. |
+| `read_plan_step` | Read one step from the approved plan. |
 
-Plans use `plan-id@revision` syntax. `initialize_plan` starts revision 1;
-editing an approved plan creates a new revision and invalidates the previous
-approval. `submit_plan` is not execution: the human must approve the rendered
+Plans are stored as one JSON file per plan. Editing an approved plan invalidates
+its approval. `submit_plan` is not execution: the human must approve the rendered
 Markdown artifact before Fleet can hand the approved plan to an executor.
 Denied or failed submissions remain non-executable; correct the draft and
 submit it again.
 
-The source of truth is `.opencode/plan-tools.json`. The Markdown file under
-`.opencode/plan-artifacts/` is generated for approval. Same-session handoff is
+The source of truth is one JSON file per plan under `.opencode/plans/`. The
+Markdown file under `.opencode/plan-artifacts/` is generated for approval. Same-session handoff is
 configurable in `opencode.jsonc` and
 defaults to Fleet (`approval_agent: "fleet"`). Fleet is the normal handoff
 path; do not launch it manually.
@@ -184,11 +183,11 @@ The standalone Plannotator commands remain available:
 | `/ask-code` | Answer questions about the local codebase using Cartographer. |
 | `/ask-info` | Answer documentation, API, and general-knowledge questions using Navigator. |
 | `/fix-all` | Run project linters and tests, then fix reported errors. |
-| `/describe` | Set a conventional-commit description for the current Jujutsu revision. |
+| `/describe` | Describe the current version-control change, preferring Jujutsu when `.jj/` exists. |
 | `/plannotator-annotate` | Open Plannotator to annotate a file, folder, or URL. |
 | `/plannotator-last` | Open Plannotator to annotate the latest assistant message. |
 | `/plannotator-review` | Review current changes or a pull-request URL in Plannotator. |
-| `/split` | Split the current Jujutsu revision into self-consistent changes. |
+| `/split` | Split the current version-control change into self-consistent changes, preferring Jujutsu when `.jj/` exists. |
 | `/doc` | Create or update documentation. |
 
 `/alias` is provided by the model-alias plugin; it lists, sets, or deletes model aliases.
