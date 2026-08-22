@@ -14,7 +14,7 @@ const editable = (plan: Plan) => {
   plan.approved = false;
 };
 
-export function initializePlan(root: string, id: string, goal: string): Plan {
+export function initializePlan(root: string, id: string, goal: string, context: string): Plan {
   idText(id);
   if (existsSync(planFile(root, id)))
     throw new Error(`plan already exists: ${id}`);
@@ -22,6 +22,7 @@ export function initializePlan(root: string, id: string, goal: string): Plan {
     schema_version: 1,
     id,
     goal: requiredText(goal, "goal"),
+    context: requiredText(context, "context"),
     created_at: new Date().toISOString(),
     steps: {},
     approval_status: "pending",
@@ -91,7 +92,7 @@ function approved(root: string, id: string): Plan {
 }
 export function readPlan(root: string, id: string) {
   const plan = approved(root, id);
-  return { id, goal: plan.goal, steps: Object.values(plan.steps) };
+  return { id, goal: plan.goal, context: plan.context, steps: Object.values(plan.steps) };
 }
 export function glimpsePlan(root: string, id: string) {
   const plan = approved(root, id),

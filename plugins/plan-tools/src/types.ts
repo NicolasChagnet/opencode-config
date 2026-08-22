@@ -13,6 +13,7 @@ export type Plan = {
   schema_version: 1;
   id: string;
   goal: string;
+  context: string;
   created_at: string;
   steps: Record<string, Step>;
   approval_status: ApprovalStatus;

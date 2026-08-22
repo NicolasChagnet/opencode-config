@@ -28,9 +28,9 @@ export const tools = (
 ) => ({
   initialize_plan: tool({
     description: "Create a new plan draft.",
-    args: { plan_id: tool.schema.string(), goal: tool.schema.string() },
-    execute: async ({ plan_id, goal }, context) =>
-      JSON.stringify(initializePlan(context.worktree, plan_id, goal)),
+    args: { plan_id: tool.schema.string(), goal: tool.schema.string(), context: tool.schema.string() },
+    execute: async ({ plan_id, goal, context }, ctx) =>
+      JSON.stringify(initializePlan(ctx.worktree, plan_id, goal, context)),
   }),
   insert_step: tool({
     description: "Add a step to a plan.",

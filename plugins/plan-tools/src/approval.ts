@@ -25,12 +25,14 @@ const markdown = (plan: Plan) =>
   [
     `# Plan ${plan.id}`,
     `Goal: ${plan.goal}`,
+    `Context: ${plan.context}`,
     "",
     ...Object.values(plan.steps).flatMap((step) => [
       `## Step ${step.id}`,
       `- Dependencies: ${step.dependency_ids.join(", ") || "none"}`,
       `- Owned paths: ${step.owned_paths.join(", ")}`,
       `- Goal: ${step.step_goal}`,
+      `- Context: ${plan.context}`,
       `- Implementation: ${step.implementation}`,
       `- Verification: ${step.verification}`,
       "",
