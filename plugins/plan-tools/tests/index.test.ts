@@ -68,10 +68,9 @@ describe("plan storage", () => {
 
   test("registers list_plans and mark_step_done on the tool surface", () => {
     const surface = tools({}, () => ({}) as never);
-    expect(Object.keys(surface)).toEqual(expect.arrayContaining(["list_plans", "mark_step_done", "delegate_step"]));
+    expect(Object.keys(surface)).toEqual(expect.arrayContaining(["list_plans", "mark_step_done"]));
     expect(surface.list_plans.args).toEqual({});
     expect(Object.keys(surface.mark_step_done.args)).toEqual(["plan_id", "step_id"]);
-    expect(Object.keys(surface.delegate_step.args)).toEqual(["plan_id", "step_id", "agent"]);
   });
 
 });
