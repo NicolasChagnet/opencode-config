@@ -4,6 +4,8 @@ import {
   glimpsePlan,
   initializePlan,
   insertStep,
+  listPlans,
+  markStepDone,
   readPlan,
   readPlanStep,
   removeStep,
@@ -85,5 +87,20 @@ export const tools = (
     args: { plan_id: tool.schema.string() },
     execute: async ({ plan_id }, context) =>
       JSON.stringify(glimpsePlan(context.worktree, plan_id)),
+  }),
+  list_plans: tool({
+    description: "List all persisted plans as id/created_at summaries.",
+    args: {},
+    execute: async (_args, context) =>
+      JSON.stringify(listPlans(context.worktree)),
+  }),
+  mark_step_done: tool({
+    description: "Mark a step as done, preserving approval state. Idempotent.",
+    args: {
+      plan_id: tool.schema.string(),
+      step_id: tool.schema.string(),
+    },
+    execute: async ({ plan_id, step_id }, context) =>
+      JSON.stringify(markStepDone(context.worktree, plan_id, step_id)),
   }),
 });

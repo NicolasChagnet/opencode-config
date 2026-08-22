@@ -5,6 +5,7 @@ export type Step = {
   step_goal: string;
   implementation: string;
   verification: string;
+  done: boolean;
 };
 
 export type ApprovalStatus = "pending" | "approved" | "denied" | "error";

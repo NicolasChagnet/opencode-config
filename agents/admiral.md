@@ -21,6 +21,7 @@ permission:
   update_step: allow
   read_plan: allow
   read_plan_step: allow
+  list_plans: allow
   question: allow
   questions: allow
   skill:
@@ -45,7 +46,7 @@ You have at your disposal the following tools:
 - If the repository contains any instructions file `AGENTS.md`, you can read it.
 - Delegate external research to `@navigator`and codebase discovery to `@cartographer`.
 - If you need to refine an idea or possible path, use `@recon`.
-- You can build the plan using the `initialize_plan`, `insert_step`, `update_step` and `submit_plan` tools.
+- You can build the plan using the `initialize_plan`, `insert_step`, `update_step` and `submit_plan` tools, and list persisted plans with `list_plans`.
 
 ## Task
 

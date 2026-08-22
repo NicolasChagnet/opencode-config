@@ -1,4 +1,4 @@
-import { loadPlan, planFile, savePlan } from "./storage.js";
+import { listPlanSummaries, loadPlan, planFile, savePlan } from "./storage.js";
 import { requiredText, validateGraph, validateStep } from "./validation.js";
 import type { Plan, Step } from "./types.js";
 import { existsSync } from "node:fs";
@@ -117,4 +117,20 @@ export function readPlanStep(root: string, id: string, stepId: string) {
     step = plan.steps[stepId];
   if (!step) throw new Error(`unknown step: ${stepId}`);
   return step;
+}
+
+/** List all persisted current-format plans without the approval gate. */
+export function listPlans(root: string) {
+  return listPlanSummaries(root);
+}
+
+/** Persist done=true for a step, preserving approval state. Idempotent. */
+export function markStepDone(root: string, planId: string, stepId: string): Step {
+  idText(planId);
+  const plan = loadPlan(root, planId);
+  const step = plan.steps[stepId];
+  if (!step) throw new Error(`unknown step: ${stepId}`);
+  plan.steps[stepId] = { ...step, done: true };
+  savePlan(root, plan);
+  return plan.steps[stepId];
 }

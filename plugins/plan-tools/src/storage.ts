@@ -1,5 +1,6 @@
 import {
   mkdirSync,
+  readdirSync,
   readFileSync,
   renameSync,
   unlinkSync,
@@ -30,6 +31,40 @@ export function loadPlan(root: string, id: string): Plan {
   )
     throw new Error("invalid plan file");
   return value as Plan;
+}
+
+export type PlanSummary = { id: string; created_at: string };
+
+/** Summaries of current-format plan files in the plans directory. */
+export function listPlanSummaries(root: string): PlanSummary[] {
+  const directory = plansDirectory(root);
+  let entries: string[];
+  try {
+    entries = readdirSync(directory);
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === "ENOENT") return [];
+    throw error;
+  }
+  const summaries: PlanSummary[] = [];
+  for (const entry of entries) {
+    if (!entry.endsWith(".json")) continue;
+    let value: unknown;
+    try {
+      value = JSON.parse(readFileSync(join(directory, entry), "utf8"));
+    } catch {
+      continue;
+    }
+    if (
+      !value ||
+      typeof value !== "object" ||
+      (value as Plan).schema_version !== 1 ||
+      typeof (value as Plan).id !== "string" ||
+      typeof (value as Plan).created_at !== "string"
+    )
+      continue;
+    summaries.push({ id: (value as Plan).id, created_at: (value as Plan).created_at });
+  }
+  return summaries;
 }
 
 export function savePlan(root: string, plan: Plan): void {

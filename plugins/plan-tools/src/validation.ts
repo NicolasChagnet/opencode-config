@@ -91,6 +91,7 @@ export function validateStep(input: Step, steps: Record<string, Step>): Step {
     step_goal: requiredText(input.step_goal, "step_goal"),
     implementation: requiredText(input.implementation, "implementation"),
     verification: requiredText(input.verification, "verification"),
+    done: input.done === true,
   };
 }
 
