@@ -9,7 +9,7 @@
   {"name":"fleet-cannot-route-to-navigator","parent":"fleet","child":"navigator","expectedAllow":false,"maxDepth":2},
   {"name":"frigate-cannot-route-to-watcher","parent":"frigate","child":"watcher","expectedAllow":false,"maxDepth":2},
   {"name":"admiral-structured-plan-tools","kind":"tool-boundary","agent":"admiral","tools":["initialize_plan","insert_step","update_step","submit_plan","list_plans"]},
-  {"name":"fleet-plan-tools","kind":"tool-boundary","agent":"fleet","tools":["glimpse_plan","list_plans","mark_step_done"]},
+  {"name":"fleet-plan-tools","kind":"tool-boundary","agent":"fleet","tools":["glimpse_plan","list_plans","mark_step_done","delegate_step"]},
   {"name":"frigate-immutable-step-tool","kind":"tool-boundary","agent":"frigate","tools":["read_plan_step"]},
   {"name":"watcher-full-approved-plan-tool","kind":"tool-boundary","agent":"watcher","tools":["read_plan"]},
   {"name":"watcher-cannot-route-to-frigate","parent":"watcher","child":"frigate","expectedAllow":false,"maxDepth":2},

@@ -59,12 +59,6 @@ export function updateStep(root: string, planId: string, step: Step): Step {
 export function removeStep(root: string, planId: string, stepId: string): void {
   const plan = loadPlan(root, planId);
   if (!plan.steps[stepId]) throw new Error(`unknown step: ${stepId}`);
-  if (
-    Object.values(plan.steps).some((step) =>
-      step.dependency_ids.includes(stepId),
-    )
-  )
-    throw new Error(`step is required by another step: ${stepId}`);
   const next = { ...plan.steps };
   delete next[stepId];
   validateGraph(next);
@@ -95,22 +89,8 @@ export function readPlan(root: string, id: string) {
   return { id, goal: plan.goal, context: plan.context, steps: Object.values(plan.steps) };
 }
 export function glimpsePlan(root: string, id: string) {
-  const plan = approved(root, id),
-    remaining = new Set(Object.keys(plan.steps)),
-    waves: string[][] = [];
-  while (remaining.size) {
-    const wave = [...remaining]
-      .filter((step) =>
-        plan.steps[step].dependency_ids.every((dep) => !remaining.has(dep)),
-      )
-      .sort();
-    if (!wave.length) throw new Error("plan contains a dependency cycle");
-    waves.push(wave);
-    wave.forEach((step) => {
-      remaining.delete(step);
-    });
-  }
-  return { id, goal: plan.goal, waves };
+  const plan = approved(root, id);
+  return { id, goal: plan.goal, steps: Object.keys(plan.steps) };
 }
 export function readPlanStep(root: string, id: string, stepId: string) {
   const plan = approved(root, id),

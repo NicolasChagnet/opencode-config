@@ -57,7 +57,7 @@ Review the supplied inputs and report findings.
 
 ## Output
 
-Return exactly `Findings:` followed by zero or more concise finding lines, then `Manual review: recommended` or `Manual review: not needed`.
+Return exactly `Findings:` followed by concise finding lines (or None), then `Manual review: recommended` or `Manual review: not needed`.
 
 ## Rules
 

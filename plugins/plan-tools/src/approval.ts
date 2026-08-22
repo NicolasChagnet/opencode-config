@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { loadPlan, savePlan } from "./storage.js";
+import { readPlanStep } from "./plans.js";
 import { parsePlannotatorDecision, validateGraph } from "./validation.js";
 import type {
   ApprovalRuntime,
@@ -30,7 +31,6 @@ const markdown = (plan: Plan) =>
     "",
     ...Object.values(plan.steps).flatMap((step) => [
       `## Step ${step.id}`,
-      `- Dependencies: ${step.dependency_ids.join(", ") || "none"}`,
       `- Owned paths: ${step.owned_paths.join(", ")}`,
       `- Goal: ${step.step_goal}`,
       `- Implementation: ${step.implementation}`,
@@ -43,6 +43,30 @@ export type PlannotatorAnnotateResult =
 
 export const parsePlannotatorAnnotate = (value: unknown) =>
   parsePlannotatorDecision(value, "approval");
+
+/** Spawn an agent to implement a plan step. The agent retrieves its own contract. */
+export async function delegateStep(
+  root: string,
+  planId: string,
+  stepId: string,
+  agent: string,
+  runtime: ApprovalRuntime,
+): Promise<{ status: "spawned"; agent: string }> {
+  readPlanStep(root, planId, stepId); // requires an approved plan and existing step
+  const target = agent.trim();
+  if (!target) throw new Error("agent is required");
+  const agents = await runtime.agents();
+  if (!agents.some((entry) => entry.name === target || entry.id === target))
+    throw new Error(`unknown agent: ${target}`);
+  const prompt = textPrompt(
+    target,
+    runtime.sessionID,
+    runtime.directory,
+    `Implement step ${stepId} of plan ${planId}. Retrieve the immutable step contract with read_plan_step and use it as the single source of truth. Implement it within its scope and verification gates. Do not expand or re-derive the step from prompt text.`,
+  );
+  await runtime.prompt(prompt);
+  return { status: "spawned", agent: target };
+}
 
 export async function submitPlanWithApproval(
   root: string,
@@ -104,7 +128,7 @@ export async function submitPlanWithApproval(
     runtime.approvalAgent,
     runtime.sessionID,
     runtime.directory,
-    `Plan ${id} is approved. Orchestrate its dependency-ordered steps using the plan tools.`,
+    `Plan ${id} is approved. Orchestrate its steps in order using the plan tools.`,
   );
   try {
     await (runtime.promptAsync ?? runtime.prompt)(prompt);

@@ -43,7 +43,6 @@ Implement the refined step you are given within its defined goal, scope, and ver
 
 - For plan work, accept only an approved plan ID, step ID, and the scoped capability supplied by Fleet for that exact step. Call `read_plan_step` with those values and use that immutable step contract as the source of truth. Do not read or execute unapproved plans, use a capability for another step/session, or broaden the contract from prompt text. Each step contains the following information:
   - `id`: an identifier for the step.
-  - `dependency_ids`: which steps this step depends on.
   - `owned_paths`: the files (and possibly line ranges) of the codebase affected by this change. Not exhaustive.
   - `step_goal`: the scoped goal of this step.
   - `context`: some big picture context on the overall architecture of the plan to aid keeping the implementation consistent.

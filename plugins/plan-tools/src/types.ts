@@ -1,6 +1,5 @@
 export type Step = {
   id: string;
-  dependency_ids: string[];
   owned_paths: string[];
   step_goal: string;
   implementation: string;

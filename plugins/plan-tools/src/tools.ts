@@ -1,5 +1,5 @@
 import { tool } from "@opencode-ai/plugin";
-import { submitPlanWithApproval } from "./approval.js";
+import { delegateStep, submitPlanWithApproval } from "./approval.js";
 import {
   glimpsePlan,
   initializePlan,
@@ -16,7 +16,6 @@ import type { ApprovalRuntime, Step } from "./types.js";
 const stepArgs = {
   plan_id: tool.schema.string(),
   id: tool.schema.string(),
-  dependency_ids: tool.schema.array(tool.schema.string()),
   owned_paths: tool.schema.array(tool.schema.string()),
   goal: tool.schema.string(),
   implementation: tool.schema.string(),
@@ -81,9 +80,28 @@ export const tools = (
     execute: async ({ plan_id, step_id }, context) =>
       JSON.stringify(readPlanStep(context.worktree, plan_id, step_id)),
   }),
+  delegate_step: tool({
+    description:
+      "Spawn an agent to implement a plan step. The agent retrieves its immutable contract itself via read_plan_step; do not pass step details inline.",
+    args: {
+      plan_id: tool.schema.string(),
+      step_id: tool.schema.string(),
+      agent: tool.schema.string(),
+    },
+    execute: async ({ plan_id, step_id, agent }, context) =>
+      JSON.stringify(
+        await delegateStep(
+          context.worktree,
+          plan_id,
+          step_id,
+          agent,
+          runtime(context),
+        ),
+      ),
+  }),
   glimpse_plan: tool({
     description:
-      "Summarize the approved plan. Returns its goal and execution waves.",
+      "Summarize the approved plan. Returns its goal and steps in order.",
     args: { plan_id: tool.schema.string() },
     execute: async ({ plan_id }, context) =>
       JSON.stringify(glimpsePlan(context.worktree, plan_id)),
