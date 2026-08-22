@@ -7,8 +7,7 @@ permission:
   "*": deny
   skill:
     "*": deny
-    "writing-clearly-and-concisely": allow
-    "humanizer": allow
+    "writing*": allow
 ---
 
 ## Role

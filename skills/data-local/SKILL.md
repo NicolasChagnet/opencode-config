@@ -1,5 +1,5 @@
 ---
-name: local-data
+name: data-local
 description: Use when inspecting local CSV, Parquet, or SQLite data with DuckDB without dumping datasets.
 ---
 

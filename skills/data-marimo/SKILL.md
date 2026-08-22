@@ -1,5 +1,5 @@
 ---
-name: marimo-ds
+name: data-marimo
 description: Builds and edits marimo notebooks for exploratory data science — data analysis, model training, and hyperparameter experiments. Use when the user wants to analyze data, train or evaluate a model, run experiments across hyperparameters, or create an interactive notebook in marimo. Triggers on "marimo", "notebook", "explore this data", "train a model", "run an experiment".
 ---
 

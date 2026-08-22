@@ -29,9 +29,7 @@ permission:
   read_plan: allow
   skill:
     "*": deny
-    "code-review-and-quality": allow
-    "code-simplification": allow
-    "codebase-design": allow
+    "code*": allow
 ---
 
 ## Role

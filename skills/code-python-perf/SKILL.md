@@ -1,5 +1,5 @@
 ---
-name: python-perf
+name: code-python-perf
 description: This skill should be used when analyzing Python code for performance bottlenecks, profiling wall time, CPU usage, or peak RSS, and recommending improvements ranked by effort versus expected gain.
 ---
 

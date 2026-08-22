@@ -1,5 +1,5 @@
 ---
-name: rust-perf
+name: code-rust-perf
 description: Use when profiling, benchmarking, or optimizing Rust code and when choosing Rust/Python data-science interop boundaries.
 ---
 

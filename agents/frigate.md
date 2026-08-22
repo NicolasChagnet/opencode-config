@@ -9,16 +9,8 @@ permission:
   bash: allow
   skill:
     "*": deny
-    "debugging-and-error-recovery": allow
-    "code-simplification": allow
-    "codebase-design": allow
-    "rust-perf": allow
-    "python-perf": allow
-    "data-science": allow
-    "local-data": allow
-    "marimo-ds": allow
-    "bigquery": allow
-    "dataform": allow
+    "code*": allow
+    "data*": allow
     "ponytail": allow
     "ponytail-review": allow
     "ponytail-audit": allow

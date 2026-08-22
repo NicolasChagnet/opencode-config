@@ -1,5 +1,5 @@
 ---
-name: bigquery
+name: data-bigquery
 description: This skill should be used when working with BigQuery through the `bq` CLI, especially before running queries that need schema inspection, dry-run cost estimation, or SQL performance review.
 ---
 

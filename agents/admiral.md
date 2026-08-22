@@ -27,10 +27,8 @@ permission:
     "*": deny
     "ponytail": allow
     "ponytail-review": allow
-    "codebase-design": allow
-    "code-simplification": allow
-    "debugging-and-error-recovery": allow
-    "dataform": allow
+    "code*": allow
+    "data*": allow
 ---
 
 ## Role
