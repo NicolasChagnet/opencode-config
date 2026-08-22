@@ -19,6 +19,9 @@ permission:
     "marimo-ds": allow
     "bigquery": allow
     "dataform": allow
+    "ponytail": allow
+    "ponytail-review": allow
+    "ponytail-audit": allow
   ast-grep-search: allow
   ast-grep-outline: allow
   ast-grep-rewrite: allow

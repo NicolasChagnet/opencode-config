@@ -23,6 +23,14 @@ permission:
   read_plan_step: allow
   question: allow
   questions: allow
+  skill:
+    "*": deny
+    "ponytail": allow
+    "ponytail-review": allow
+    "codebase-design": allow
+    "code-simplification": allow
+    "debugging-and-error-recovery": allow
+    "dataform": allow
 ---
 
 ## Role
