@@ -12,6 +12,18 @@ describe("review-tools", () => {
     expect(await runCodeReview(runtime)).toBe("manual user review:\nfix this");
   });
 
+  test("runs the supported plannotator review command", async () => {
+    let invoked = "";
+    const runtime: ReviewRuntime = {
+      shell: ((strings: TemplateStringsArray) => {
+        invoked = strings[0];
+        return { text: async () => "fix this" };
+      }) as never,
+    };
+    expect(await runCodeReview(runtime)).toBe("manual user review:\nfix this");
+    expect(invoked).toBe("plannotator review");
+  });
+
   test("replaces parts with the labeled review output", async () => {
     const shell = (() => ({ text: async () => "fix this" })) as never;
     const output = { parts: [{ type: "text", text: "__opencode_plan_tools_code_review__" }] };
