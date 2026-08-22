@@ -101,7 +101,6 @@
     }
   },
   "default_agent": "jack",
-  "subagent_depth": 2,
   // Fine-tune tool permissions per agent
   "permission": {
     "context7_*": "deny",
