@@ -1,6 +1,6 @@
 ---
 description: Orchestrates implementation by parallel coding agents
-mode: subagent
+mode: primary
 model: lightweight
 temperature: 0.2
 permission:
