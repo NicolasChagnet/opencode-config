@@ -25,7 +25,7 @@ function boundOutput(output: string): string {
 
 export async function runCodeReview(runtime: ReviewRuntime): Promise<string> {
   try {
-    const output = await runtime.shell`plannotator opencode-review`.text();
+    const output = await runtime.shell`plannotator review`.text();
     return reviewMarker + boundOutput(output);
   } catch (error) {
     return `Code review failed: ${String(error)}`;
