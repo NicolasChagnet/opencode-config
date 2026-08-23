@@ -84,8 +84,8 @@ The default agent is `jack`. The built-in `build`, `plan`, `general`,
 | Jack | Lightweight primary implementation agent for clear, low-risk work. Works directly, cannot delegate, and escalates unclear scope, design, or verification. |
 | Recon | Primary, read-only design and requirements exploration agent. Clarifies the desired outcome, generates a small set of implementation options with tradeoffs, and recommends one before any planning begins. |
 | Lookout | Primary, read-only Investigator. Establishes evidence, traces the code/data path, identifies root cause and affected callers, and produces a correction brief for Admiral. |
-| Admiral | Planning-only primary agent. Turns a concrete goal or a Lookout correction brief into dependency-declared, ordered, verifiable `Step N` plans; explores the codebase and external docs directly. |
-| Fleet | Non-editing orchestrator. Validates the dependency graph, schedules topological waves, dispatches Frigate after dependencies succeed, blocks failed descendants, and invokes Watcher once after executable work. |
+| Admiral | Planning-only primary agent. Turns a concrete goal or a Lookout correction brief into ordered, sequential, verifiable `Step N` plans; explores the codebase and external docs directly. |
+| Fleet | Non-editing orchestrator. Executes plan steps sequentially, dispatching each to Frigate, stopping on failure, and invoking Watcher once after executable work. |
 | Frigate | General-purpose coding agent and main implementation actor. Can edit, run Bash, and delegate prose drafting to Chronicler. |
 | Watcher | Read-only review for correctness, architecture, security, maintainability, and over-engineering. |
 | Chronicler | Tool-free, read-only drafting agent for publication-ready prose from a supplied verified brief. |
@@ -111,22 +111,20 @@ The planned workflow is:
 Recon/Lookout (optional) -> Admiral -> human plan approval (Plannotator) -> Fleet
 ```
 
-Admiral's plan gives every step a dependency-declared contract:
+Admiral's plan gives every step a verifiable contract:
 
 ```text
 Step N
-Depends on
 Goal
 Scope
 Implementation
 Verification
 ```
 
-Dependencies cover logic, verification, and conflicts over mutable scope. Fleet
-manually derives topological ready sets, runs them in waves, dispatches Frigate
-only after dependencies succeed, blocks descendants of failed steps, and
-invokes Watcher once after at least one executable step succeeds. Human approval
-of the plan always precedes Fleet execution.
+Steps run sequentially, in the order Admiral inserted them; Fleet executes each
+step with Frigate, stops on the first failure, and invokes Watcher once after at
+least one executable step succeeds. Human approval of the plan always precedes
+Fleet execution.
 
 Routing boundaries are fixed:
 
@@ -149,7 +147,7 @@ The registered tools are:
 | Tool | Purpose |
 | --- | --- |
 | `initialize_plan` | Create a project-scoped plan draft by plan ID. |
-| `insert_step` | Add a dependency-declared step to the draft. |
+| `insert_step` | Add a step to the draft. |
 | `update_step` | Update a draft step. |
 | `submit_plan` | Render the plan and open the Plannotator approval gate. |
 | `read_plan` | Read the approved plan. |

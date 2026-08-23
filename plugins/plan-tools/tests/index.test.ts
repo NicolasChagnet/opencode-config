@@ -15,7 +15,7 @@ describe("plan storage", () => {
   afterEach(() => rmSync(root, { recursive: true, force: true }));
 
   test("stores one JSON file per plan and edits the draft in place", () => {
-    initializePlan(root, "demo", "ship the demo");
+    initializePlan(root, "demo", "ship the demo", "context");
     insertStep(root, "demo", step("one"));
     insertStep(root, "demo", step("two"));
     expect(readFileSync(join(root, ".opencode", "plans", "demo.json"), "utf8")).toContain('"id": "demo"');
@@ -28,13 +28,17 @@ describe("plan storage", () => {
   });
 
   test("glimpse returns steps in insertion order", () => {
-    initializePlan(root, "demo", "ship the demo");
+    initializePlan(root, "demo", "ship the demo", "context");
     insertStep(root, "demo", step("z"));
     insertStep(root, "demo", step("a"));
     insertStep(root, "demo", step("m"));
     expect(() => glimpsePlan(root, "demo")).toThrow("not approved");
     submitPlan(root, "demo");
-    expect(glimpsePlan(root, "demo").steps).toEqual(["z", "a", "m"]);
+    expect(glimpsePlan(root, "demo").steps).toEqual([
+      { id: "z", done: false },
+      { id: "a", done: false },
+      { id: "m", done: false },
+    ]);
   });
 
   test("parses Plannotator approval and feedback", () => {

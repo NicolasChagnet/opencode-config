@@ -90,7 +90,11 @@ export function readPlan(root: string, id: string) {
 }
 export function glimpsePlan(root: string, id: string) {
   const plan = approved(root, id);
-  return { id, goal: plan.goal, steps: Object.keys(plan.steps) };
+  return {
+    id,
+    goal: plan.goal,
+    steps: Object.values(plan.steps).map((s) => ({ id: s.id, done: s.done })),
+  };
 }
 export function readPlanStep(root: string, id: string, stepId: string) {
   const plan = approved(root, id),

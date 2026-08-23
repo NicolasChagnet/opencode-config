@@ -1,5 +1,5 @@
 ---
-description: Orchestrates implementation by parallel coding agents
+description: Orchestrates sequential implementation by coding agents
 mode: primary
 model: lightweight
 temperature: 0.2

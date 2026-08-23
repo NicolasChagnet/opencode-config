@@ -82,7 +82,7 @@ export const tools = (
   }),
   glimpse_plan: tool({
     description:
-      "Summarize the approved plan. Returns its goal and steps in order.",
+      "Summarize the approved plan. Returns its goal and steps in order, each marked done or not.",
     args: { plan_id: tool.schema.string() },
     execute: async ({ plan_id }, context) =>
       JSON.stringify(glimpsePlan(context.worktree, plan_id)),
