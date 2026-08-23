@@ -82,18 +82,33 @@ The default agent is `jack`. The built-in `build`, `plan`, `general`,
 | Agent | Role |
 | --- | --- |
 | Jack | Lightweight primary implementation agent for clear, low-risk work. Works directly, cannot delegate, and escalates unclear scope, design, or verification. |
-| Admiral | Planning-only primary agent. Produces dependency-declared, ordered, verifiable `Step N` plans; explores the codebase and external docs directly and may delegate ideation to Recon. |
+| Recon | Primary, read-only design and requirements exploration agent. Clarifies the desired outcome, generates a small set of implementation options with tradeoffs, and recommends one before any planning begins. |
+| Lookout | Primary, read-only Investigator. Establishes evidence, traces the code/data path, identifies root cause and affected callers, and produces a correction brief for Admiral. |
+| Admiral | Planning-only primary agent. Turns a concrete goal or a Lookout correction brief into dependency-declared, ordered, verifiable `Step N` plans; explores the codebase and external docs directly. |
 | Fleet | Non-editing orchestrator. Validates the dependency graph, schedules topological waves, dispatches Frigate after dependencies succeed, blocks failed descendants, and invokes Watcher once after executable work. |
 | Frigate | General-purpose coding agent and main implementation actor. Can edit, run Bash, and delegate prose drafting to Chronicler. |
 | Watcher | Read-only review for correctness, architecture, security, maintainability, and over-engineering. |
 | Chronicler | Tool-free, read-only drafting agent for publication-ready prose from a supplied verified brief. |
-| Recon | Read-only brainstorming agent; explores the codebase and external docs directly. |
 | Bosun | Teaches concepts through structured explanations and practice. |
 
-Use Jack directly for simple, clear, low-risk work. The planned workflow is:
+The primary agents are distinct front doors, and you select the stage manually:
+
+- **Recon** for uncertain requirements and open-ended design questions. It
+  clarifies the desired outcome and returns an options/tradeoffs/recommendation
+  brief, not a plan.
+- **Lookout** for evidence-based code or data investigation. It reproduces the
+  problem, traces the relevant path, and returns a correction brief for Admiral.
+- **Admiral** for concrete planning. It turns a concrete goal or a Lookout
+  correction brief into a structured plan; it does not plan from unresolved
+  wishes or uninvestigated bug reports.
+- **Jack** for unrelated, all-purpose, clear low-risk implementation work.
+
+There is no automatic routing between these stages. You pick the agent that
+matches the request, and the output of one stage is carried forward manually.
+The planned workflow is:
 
 ```
-Admiral -> human plan approval (Plannotator) -> Fleet
+Recon/Lookout (optional) -> Admiral -> human plan approval (Plannotator) -> Fleet
 ```
 
 Admiral's plan gives every step a dependency-declared contract:
@@ -110,12 +125,12 @@ Verification
 Dependencies cover logic, verification, and conflicts over mutable scope. Fleet
 manually derives topological ready sets, runs them in waves, dispatches Frigate
 only after dependencies succeed, blocks descendants of failed steps, and
-invokes Watcher once after at least one executable step succeeds.
+invokes Watcher once after at least one executable step succeeds. Human approval
+of the plan always precedes Fleet execution.
 
 Routing boundaries are fixed:
 
 ```text
-Admiral -> Recon
 Fleet   -> Frigate, Watcher
 Frigate -> Chronicler
 Watcher -> none
