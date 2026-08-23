@@ -25,37 +25,19 @@ aliases.
 
 ## MCP servers
 
-### Github MCP server
-
-Both GitHub MCP connections use `https://api.githubcopilot.com/mcp/` which requires a PAT with the following permissions:
-
-| Scope | Permissions | Description |
-| --- | --- | --- |
-| Contents | Read and write (or Read-only) | Reading code, directory structure, files, creating/updating branches and commits |
-| Pull requests | Read and write (or Read-only) | Listing, searching, viewing diffs, creating/commenting on PRs |
-| Issues | Read and write (or Read-only) | Creating, searching, reading, and updating issue threads |
-| Discussions | Read-only | Reading discussion threads and comments (if used) |
-| Commit statuses | Read-only | Checking CI/CD status on commits/PRs |
-| Actions / Workflows | Read-only (optional) | Inspecting GitHub Actions workflows and run logs |
-| Metadata | Read-only | (Automatically granted) Required to query repository metadata |
-
-
-Place the PAT inside the gitignored file `.github_token`.
-
-The following agents use the GitHub MCP servers:
-- **Frigate** uses the `github` server and has full GitHub MCP access.
-- **Navigator** uses only `github-readonly`, limited to the advertised
-  read-only tools.
-
 ### Context7
 
 Standard MCP server to access API and documentation of common libraries in a clean way. Use `opencode mcp auth context7` before first launch to authenticate (e.g. using your Github account).
 
-Available for external research when granted to an agent.
+Available for documentation search when granted to an agent.
 
-## Arxiv and paper-search
+### Cartography
 
-Both are used by **Navigator** to find more academic information in research papers, etc. No particular authentication needed.
+Local MCP server (`mcp-codebase-cartography`) for structural codebase exploration, exposing read-only tools: `get_codebase_map`, `get_compressed_file`, `search_codebase`, `get_file_outline`, `get_symbol_definition`, `get_upstream_refs`, `get_downstream_refs`, and `get_ast_diff`. Runs via `uv --project ~/devs/repos/mcp-codebase-cartography/python-bindings run serve`. Granted to an agent when that agent's purpose needs codebase discovery.
+
+### DuckDuckGo
+
+Local MCP server for keyless web search, exposing the `search` tool (with the `[browser]` extra so the default `auto` backend can beat DuckDuckGo's TLS-fingerprint blocking). Page fetching is left to the built-in `webfetch` (no rate limit, always available) rather than the server's `fetch_content`. Runs via `uvx --with duckduckgo-mcp-server[browser] duckduckgo-mcp-server`. Replaces the built-in `websearch` tool (denied globally), which only surfaces on the OpenCode/OpenCode Go providers or with `OPENCODE_ENABLE_EXA=1` and was a no-op on this `github-copilot` setup. Granted to agents that do external research.
 
 ## Model aliases
 
@@ -100,14 +82,12 @@ The default agent is `jack`. The built-in `build`, `plan`, `general`,
 | Agent | Role |
 | --- | --- |
 | Jack | Lightweight primary implementation agent for clear, low-risk work. Works directly, cannot delegate, and escalates unclear scope, design, or verification. |
-| Admiral | Planning-only primary agent. Produces dependency-declared, ordered, verifiable `Step N` plans; may delegate repository discovery to Cartographer and external research to Navigator. |
+| Admiral | Planning-only primary agent. Produces dependency-declared, ordered, verifiable `Step N` plans; explores the codebase and external docs directly and may delegate ideation to Recon. |
 | Fleet | Non-editing orchestrator. Validates the dependency graph, schedules topological waves, dispatches Frigate after dependencies succeed, blocks failed descendants, and invokes Watcher once after executable work. |
-| Frigate | General-purpose coding agent and main implementation actor. Can edit, run Bash, and delegate to Navigator or Chronicler. |
-| Cartographer | Read-only local codebase explorer for tracing relevant paths, flows, conventions, and risks. |
-| Navigator | Read-only external research for authoritative software documentation, GitHub sources, web sources, and academic sources. |
+| Frigate | General-purpose coding agent and main implementation actor. Can edit, run Bash, and delegate prose drafting to Chronicler. |
 | Watcher | Read-only review for correctness, architecture, security, maintainability, and over-engineering. |
 | Chronicler | Tool-free, read-only drafting agent for publication-ready prose from a supplied verified brief. |
-| Recon | Read-only brainstorming agent; may delegate external research to Navigator and codebase exploration to Cartographer. |
+| Recon | Read-only brainstorming agent; explores the codebase and external docs directly. |
 | Bosun | Teaches concepts through structured explanations and practice. |
 
 Use Jack directly for simple, clear, low-risk work. The planned workflow is:
@@ -135,9 +115,9 @@ invokes Watcher once after at least one executable step succeeds.
 Routing boundaries are fixed:
 
 ```text
-Admiral -> Cartographer, Navigator, Recon
+Admiral -> Recon
 Fleet   -> Frigate, Watcher
-Frigate -> Navigator, Chronicler
+Frigate -> Chronicler
 Watcher -> none
 ```
 
@@ -182,8 +162,8 @@ The standalone Plannotator commands remain available:
 
 | Command | Purpose |
 | --- | --- |
-| `/ask-code` | Answer questions about the local codebase using Cartographer. |
-| `/ask-info` | Answer documentation, API, and general-knowledge questions using Navigator. |
+| `/ask-code` | Answer questions about the local codebase using Jack. |
+| `/ask-info` | Answer documentation, API, and general-knowledge questions using Jack. |
 | `/fix-all` | Run project linters and tests, then fix reported errors. |
 | `/describe` | Describe the current version-control change, preferring Jujutsu when `.jj/` exists. |
 | `/plannotator-annotate` | Open Plannotator to annotate a file, folder, or URL. |

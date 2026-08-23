@@ -22,17 +22,15 @@ const normalize = (value: unknown): unknown => Array.isArray(value)
   : value
 
 const expectedPermissions: Record<string, unknown> = {
-  admiral: { "*": "deny", read: { "*": "deny", "*AGENTS.md": "allow" }, edit: "deny", bash: "deny", task: { "*": "deny", navigator: "allow", cartographer: "allow", recon: "allow" }, submit_plan: "allow", initialize_plan: "allow", insert_step: "allow", update_step: "allow", read_plan: "allow", read_plan_step: "allow", list_plans: "allow", question: "allow", questions: "allow" },
+  admiral: { "*": "deny", read: "allow", glob: "allow", grep: "allow", "ast-grep-search": "allow", "ast-grep-outline": "allow", "codegraph*": "allow", webfetch: "allow", websearch: "allow", "context7*": "allow", edit: "deny", bash: "deny", task: { "*": "deny", recon: "allow" }, submit_plan: "allow", initialize_plan: "allow", insert_step: "allow", update_step: "allow", read_plan: "allow", read_plan_step: "allow", list_plans: "allow", question: "allow", questions: "allow" },
   fleet: { "*": "deny", edit: "deny", bash: "deny", task: { "*": "deny", frigate: "allow", watcher: "allow" }, glimpse_plan: "allow", list_plans: "allow", mark_step_done: "allow"},
-  frigate: { "github_*": "allow", edit: "allow", bash: "allow", skill: { "*": "deny", "debugging-and-error-recovery": "allow", "code-simplification": "allow", "codebase-design": "allow", "rust-perf": "allow", "python-perf": "allow", "data-science": "allow", "local-data": "allow", "marimo-ds": "allow", bigquery: "allow", dataform: "allow" }, "ast-grep-search": "allow", "ast-grep-outline": "allow", "ast-grep-rewrite": "allow", "codegraph*": "allow", task: { "*": "deny", navigator: "allow", chronicler: "allow" }, read_plan_step: "allow" },
-  watcher: { "*": "deny", edit: "deny", bash: { "*": "deny", "git diff *": "allow", "git show *": "allow", "git log *": "allow", "git status": "allow", "jj diff --git --no-pager": "allow", "jj show -r *": "allow", "jj log *": "allow", "jj status": "allow" }, task: { "*": "deny" }, subagent: "deny", "ast-grep-search": "allow", "ast-grep-outline": "allow", "codegraph*": "allow", read: "allow", glob: "allow", grep: "allow", list: "allow", read_plan: "allow", skill: { "*": "deny", "code-review-and-quality": "allow", "code-simplification": "allow", "codebase-design": "allow" } },
+  frigate: { edit: "allow", bash: "allow", skill: { "*": "deny", "code*": "allow", "data*": "allow", ponytail: "allow", "ponytail-review": "allow", "ponytail-audit": "allow" }, "ast-grep-search": "allow", "ast-grep-outline": "allow", "ast-grep-rewrite": "allow", "codegraph*": "allow", webfetch: "allow", websearch: "allow", "context7*": "allow", task: { "*": "deny", chronicler: "allow" }, read_plan_step: "allow" },
+  watcher: { "*": "deny", edit: "deny", bash: { "*": "deny", "git diff *": "allow", "git show *": "allow", "git log *": "allow", "git status": "allow", "jj diff --git --no-pager": "allow", "jj show -r *": "allow", "jj log *": "allow", "jj status": "allow" }, task: { "*": "deny" }, subagent: "deny", "ast-grep-search": "allow", "ast-grep-outline": "allow", "codegraph*": "allow", read: "allow", glob: "allow", grep: "allow", list: "allow", read_plan: "allow", skill: { "*": "deny", "code*": "allow" } },
   build: {}, plan: {}, general: {}, explore: {}, scout: {},
-  jack: { edit: "allow", bash: "allow", task: "deny", skill: { "*": "allow" }, submit_plan: "deny", "ast-grep-search": "allow", "ast-grep-outline": "allow", "codegraph*": "allow", "github_*": "allow" },
-  cartographer: { "*": "deny", read: "allow", glob: "allow", grep: "allow", "ast-grep-search": "allow", "ast-grep-outline": "allow", "codegraph*": "allow", edit: "deny", bash: "deny", task: "deny", webfetch: "deny", websearch: "deny", skill: "deny", "github*": "deny", "context7*": "deny", "paper-search*": "deny", "arxiv*": "deny" },
+  jack: { edit: "allow", bash: "allow", task: "deny", skill: { "*": "allow" }, submit_plan: "deny", "ast-grep-search": "allow", "ast-grep-outline": "allow", "codegraph*": "allow", webfetch: "allow", websearch: "allow", "context7*": "allow" },
   chronicler: { "*": "deny", skill: { "*": "deny", "writing-clearly-and-concisely": "allow", humanizer: "allow" } },
-  navigator: { read: "deny", glob: "deny", grep: "deny", list: "deny", edit: "deny", bash: "deny", task: "deny", subagent: "deny", apply_patch: "deny", "ast-grep-outline": "deny", "ast-grep-search": "deny", "ast-grep-rewrite": "deny", question: "deny", skill: "deny", todowrite: "deny", submit_plan: "deny", webfetch: "allow", websearch: "allow", "context7*": "allow", "github-readonly*": "allow", "paper-search*": "allow", "arxiv*": "allow" },
-  bosun: { "*": "deny", edit: "deny", bash: "deny", question: "allow", task: { "*": "deny", navigator: "allow" } },
-  recon: { "*": "deny", edit: "deny", bash: "deny", read: "deny", grep: "deny", task: { "*": "deny", navigator: "allow", cartographer: "allow" }, question: "allow", skill: { "*": "deny", "idea-refine": "allow" } },
+  bosun: { "*": "deny", edit: "deny", bash: "deny", webfetch: "allow", websearch: "allow", "context7*": "allow", question: "allow", task: { "*": "deny" } },
+  recon: { "*": "deny", edit: "deny", bash: "deny", read: "allow", glob: "allow", grep: "allow", "ast-grep-search": "allow", "ast-grep-outline": "allow", "codegraph*": "allow", webfetch: "allow", websearch: "allow", "context7*": "allow", task: { "*": "deny" }, question: "allow", skill: { "*": "deny", "idea-refine": "allow" } },
 }
 const checks = scenarios.map((scenario: any) => {
   if (scenario.kind === "prompt-routing") return { name: scenario.name, pass: true }
@@ -56,11 +54,11 @@ for (const agent of Object.keys(agents)) {
 }
 
 const boundaries = {
-  admiral: ["cartographer", "navigator", "recon"],
+  admiral: ["recon"],
   fleet: ["frigate", "watcher"],
-  frigate: ["navigator", "chronicler"],
+  frigate: ["chronicler"],
   watcher: [],
-  recon: ["navigator", "cartographer"],
+  recon: [],
 }
 for (const [parent, children] of Object.entries(boundaries)) {
   for (const [child, value] of Object.entries(agents[parent]?.permission?.task ?? {})) {

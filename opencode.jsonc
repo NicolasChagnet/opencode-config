@@ -1,49 +1,34 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "model": "lightweight",
-  // Research agents may use only explicitly granted external MCP tools;
-  // local repository work remains with the caller or Cartographer.
+  // Agents opt in to external MCP tools (context7, cartography, duckduckgo)
+  // via their own permission blocks; these are denied by default.
   "mcp": {
     "context7": {
       "type": "remote",
       "url": "https://mcp.context7.com/mcp/oauth",
       "enabled": true
     },
-    "paper-search": {
-      "type": "local",
-      "command": ["uvx", "paper-search-mcp"]
-    },
-    "arxiv": {
-      "type": "local",
-      "command": ["uvx", "arxiv-mcp-server"]
-    },
-    "codegraph": {
+    "cartography": {
       "type": "local",
       "command": [
-        "codegraph",
-        "serve",
-        "--mcp"
+        "uv",
+        "--project",
+        "/Users/nchagnet/devs/repos/mcp-codebase-cartography/python-bindings",
+        "run",
+        "serve"
       ],
-      // Opt in per project after creating a .codegraph index.
-      "enabled": false
+      "enabled": true
     },
-    "github": {
-      "type": "remote",
-      "url": "https://api.githubcopilot.com/mcp/",
-      "enabled": true,
-      "headers": {
-        "Authorization": "Bearer {file:.github_token}"
-      }
-    },
-    "github-readonly": {
-      "type": "remote",
-      "url": "https://api.githubcopilot.com/mcp/",
-      "enabled": true,
-      "headers": {
-        "Authorization": "Bearer {file:.github_token}",
-        "X-MCP-Tools": "get_file_contents,search_code,get_repository_tree",
-        "X-MCP-Readonly": "true"
-      }
+    "duckduckgo": {
+      "type": "local",
+      "command": [
+        "uvx",
+        "--with",
+        "duckduckgo-mcp-server[browser]",
+        "duckduckgo-mcp-server"
+      ],
+      "enabled": true
     }
   },
   "agent": {
@@ -67,12 +52,12 @@
   "command": {
     "ask-code": {
       "description": "Answers questions about the codebase",
-      "agent": "cartographer",
+      "agent": "jack",
       "template": "Answer the user question using all the tools at your disposal: Question: $ARGUMENTS"
     },
     "ask-info": {
       "description": "Answers questions about documentation, API and general knowledge",
-      "agent": "navigator",
+      "agent": "jack",
       "template": "Answer the user question using all the tools at your disposal: Question: $ARGUMENTS"
     },
     "fix-all": {
@@ -104,11 +89,9 @@
   // Fine-tune tool permissions per agent
   "permission": {
     "context7_*": "deny",
-    "paper-search_*": "deny",
-    "arxiv_*": "deny",
-    "codegraph_*": "deny",
-    "github_*": "deny",
-    "github-readonly_*": "deny",
+    "cartography_*": "deny",
+    "duckduckgo_*": "deny",
+    "websearch": "deny",
     "skill": {
       "*": "deny"
     },
