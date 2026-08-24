@@ -77,4 +77,25 @@ describe("plan storage", () => {
     expect(Object.keys(surface.mark_step_done.args)).toEqual(["plan_id", "step_id"]);
   });
 
+  test("stores root-worktree plans in the session directory", async () => {
+    const directory = mkdtempSync(join(tmpdir(), "plan-tools-session-"));
+    const worktree = mkdtempSync(join(tmpdir(), "plan-tools-worktree-"));
+    try {
+      const surface = tools({}, () => ({}) as never);
+      await surface.initialize_plan.execute(
+        { plan_id: "root", goal: "goal", context: "context" },
+        { directory, worktree: "/" },
+      );
+      await surface.initialize_plan.execute(
+        { plan_id: "normal", goal: "goal", context: "context" },
+        { directory, worktree },
+      );
+      expect(readFileSync(join(directory, ".opencode", "plans", "root.json"), "utf8")).toContain('"id": "root"');
+      expect(readFileSync(join(worktree, ".opencode", "plans", "normal.json"), "utf8")).toContain('"id": "normal"');
+    } finally {
+      rmSync(directory, { recursive: true, force: true });
+      rmSync(worktree, { recursive: true, force: true });
+    }
+  });
+
 });

@@ -23,6 +23,8 @@ const stepArgs = {
 };
 const asStep = (args: Record<string, unknown>) =>
   ({ ...args, step_goal: args.goal }) as unknown as Step;
+const planRoot = (context: { directory: string; worktree: string }) =>
+  context.worktree === "/" ? context.directory : context.worktree;
 export const tools = (
   options: Record<string, unknown>,
   runtime: (context: any) => ApprovalRuntime,
@@ -31,25 +33,25 @@ export const tools = (
     description: "Create a new plan draft.",
     args: { plan_id: tool.schema.string(), goal: tool.schema.string(), context: tool.schema.string() },
     execute: async ({ plan_id, goal, context }, ctx) =>
-      JSON.stringify(initializePlan(ctx.worktree, plan_id, goal, context)),
+      JSON.stringify(initializePlan(planRoot(ctx), plan_id, goal, context)),
   }),
   insert_step: tool({
     description: "Add a step to a plan.",
     args: stepArgs,
     execute: async (args, context) =>
-      JSON.stringify(insertStep(context.worktree, args.plan_id, asStep(args))),
+      JSON.stringify(insertStep(planRoot(context), args.plan_id, asStep(args))),
   }),
   update_step: tool({
     description: "Edit a plan step.",
     args: stepArgs,
     execute: async (args, context) =>
-      JSON.stringify(updateStep(context.worktree, args.plan_id, asStep(args))),
+      JSON.stringify(updateStep(planRoot(context), args.plan_id, asStep(args))),
   }),
   remove_step: tool({
     description: "Remove a step from a plan.",
     args: { plan_id: tool.schema.string(), step_id: tool.schema.string() },
     execute: async ({ plan_id, step_id }, context) => {
-      removeStep(context.worktree, plan_id, step_id);
+      removeStep(planRoot(context), plan_id, step_id);
       return "removed";
     },
   }),
@@ -59,7 +61,7 @@ export const tools = (
     execute: async ({ plan_id }, context) =>
       JSON.stringify(
         await submitPlanWithApproval(
-          context.worktree,
+          planRoot(context),
           plan_id,
           runtime(context),
         ),
@@ -69,7 +71,7 @@ export const tools = (
     description: "Read the approved plan if it exists.",
     args: { plan_id: tool.schema.string() },
     execute: async ({ plan_id }, context) =>
-      JSON.stringify(readPlan(context.worktree, plan_id)),
+      JSON.stringify(readPlan(planRoot(context), plan_id)),
   }),
   read_plan_step: tool({
     description: "Read one step from an approved plan.",
@@ -78,20 +80,20 @@ export const tools = (
       step_id: tool.schema.string(),
     },
     execute: async ({ plan_id, step_id }, context) =>
-      JSON.stringify(readPlanStep(context.worktree, plan_id, step_id)),
+      JSON.stringify(readPlanStep(planRoot(context), plan_id, step_id)),
   }),
   glimpse_plan: tool({
     description:
       "Summarize the approved plan. Returns its goal and steps in order, each marked done or not.",
     args: { plan_id: tool.schema.string() },
     execute: async ({ plan_id }, context) =>
-      JSON.stringify(glimpsePlan(context.worktree, plan_id)),
+      JSON.stringify(glimpsePlan(planRoot(context), plan_id)),
   }),
   list_plans: tool({
     description: "List all persisted plans as id/created_at summaries.",
     args: {},
     execute: async (_args, context) =>
-      JSON.stringify(listPlans(context.worktree)),
+      JSON.stringify(listPlans(planRoot(context))),
   }),
   mark_step_done: tool({
     description: "Mark a step as done, preserving approval state. Idempotent.",
@@ -100,6 +102,6 @@ export const tools = (
       step_id: tool.schema.string(),
     },
     execute: async ({ plan_id, step_id }, context) =>
-      JSON.stringify(markStepDone(context.worktree, plan_id, step_id)),
+      JSON.stringify(markStepDone(planRoot(context), plan_id, step_id)),
   }),
 });
