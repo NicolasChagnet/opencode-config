@@ -19,7 +19,7 @@ permission:
   duckduckgo_search: allow
   context7*: allow
   edit: deny
-  bash: deny
+  bash: ask
   task:
     "*": deny
   submit_plan: allow

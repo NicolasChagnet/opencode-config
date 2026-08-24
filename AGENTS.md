@@ -32,4 +32,4 @@
 - Any file not meant to be committed should be placed in `.local/`.
 - If a repository has a `.jj/` folder, ALWAYS use `jj` as main VCS.
 - Prefer improved unix tools: `rg` instead of `grep`, `fd` instead of `find`, use `jq` for JSON parsing.
-- Github operations can be done via the `gh` CLI.
+- Github operations can be done via the `gh` CLI. For example, `gh pr view 255`.

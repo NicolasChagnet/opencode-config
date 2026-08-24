@@ -6,7 +6,7 @@ temperature: 0.2
 permission:
   "*": deny
   edit: deny
-  bash: deny
+  bash: ask
   task:
     "*": deny
     "frigate": "allow"

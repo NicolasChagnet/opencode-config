@@ -5,7 +5,7 @@ model: lightweight
 permission:
   edit: allow
   bash: allow
-  task: deny
+  task: ask
   skill:
     "*": allow
   submit_plan: deny

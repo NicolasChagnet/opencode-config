@@ -5,7 +5,7 @@ model: balanced
 permission:
   "*": deny
   edit: deny
-  bash: deny
+  bash: ask
   webfetch: allow
   duckduckgo_search: allow
   context7*: allow

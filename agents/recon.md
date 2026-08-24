@@ -6,7 +6,7 @@ temperature: 1.2
 permission:
   "*": deny
   edit: deny
-  bash: deny
+  bash: ask
   read: allow
   glob: allow
   grep: allow
@@ -21,7 +21,7 @@ permission:
   duckduckgo_search: allow
   context7*: allow
   task:
-    "*": deny
+    "*": ask
   question: allow
   skill:
     "*": deny

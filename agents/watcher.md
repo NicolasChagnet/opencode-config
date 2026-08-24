@@ -5,7 +5,7 @@ model: reviewer
 temperature: 0.2
 permission:
   "*": deny
-  edit: deny
+  edit: ask
   bash:
     "*": deny
     "git diff *": allow
@@ -17,7 +17,7 @@ permission:
     "jj log *": allow
     "jj status": allow
   task:
-    "*": "deny"
+    "*": "ask"
   subagent: deny
   cartography_get_compressed_file: allow
   cartography_search_codebase: allow
