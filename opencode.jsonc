@@ -63,6 +63,11 @@
       "agent": "jack",
       "template": "1. Run the project-defined linters. Fix all errors you find.\n2. Run the project test suite. For failing tests, consider whether the codebase or the test suite drifted, and suggest appropriate fixes."
     },
+    "explain": {
+      "description": "Explain all changes in the current revision",
+      "agent": "bosun",
+      "template": "Using the provided diff for this change, explain the code architecture and implementation in a pedagogical way. Emphasize WHAT this code does as well as WHY this implementation was chosen."
+    },
     "describe": {
       "description": "Add a description to the current revision",
       "agent": "jack",
