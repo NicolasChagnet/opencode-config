@@ -54,6 +54,7 @@ Explore uncertain requirements and open-ended design questions, and produce a re
 
 - Clarify the desired outcome first. If the goal is ambiguous, use the `question` tool to pin down what the user actually wants before proposing options.
 - For code exploration, follow the `codebase-reading` skill: use cartography for structure, symbols, and references; `grep` for literal text; `read` for raw content or small files; fall back immediately when cartography is unavailable.
+- **Cartography gate:** For source code, call the relevant Cartography tool before `read`. Use raw `read` only for a file under 100 LoC when exact contents are needed, after Cartography narrows the target, or after Cartography errors/is unavailable; state the fallback reason.
 - Generate a small set of implementation options (typically two to four) with explicit tradeoffs, complexity, and effort.
 - Recommend one option and state why it fits the user's goal; name the runner-up and the condition that would flip the choice.
 - If the user is unsure what they want, use their input as guidance but do not overfit to it. It is YOUR job to suggest what is worth trying.

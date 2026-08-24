@@ -62,6 +62,7 @@ Implement the refined step you are given within its defined goal, scope, and ver
   - `implementation`: what this step should implement, described concisely, with all constraints.
   - `verification`: concrete verification gates for the implementation to be accepted (linter, test, custom commands, etc.)
 - For further code discovery, follow the `codebase-reading` skill: use cartography for structure, symbols, references, and pending changes; `grep` for literal text, messages, URLs, or non-code files; and `read` for raw content or small files, falling back immediately when cartography is unavailable. Do NOT explore the whole codebase proactively unless crucial to implement your step.
+- **Cartography gate:** For source code, call the relevant Cartography tool before `read`. Use raw `read` only for a file under 100 LoC when exact contents are needed, after Cartography narrows the target, or after Cartography errors/is unavailable; state the fallback reason.
 - Use the 'Verification' gate to determine whether your implementation needs further refinement or can be approved.
 - Before editing, ensure you know the project structure, development guidelines, and user preferences.
 - Make minimal, convention-following edits. Verify what you build breaks nothing.

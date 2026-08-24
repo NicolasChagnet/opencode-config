@@ -31,11 +31,18 @@ Use `read` / `grep` / `glob` for everything cartography is not built for:
 
 - **Prose and documents** — Markdown, README, docs, `.md`, `.txt`, comments-heavy prose. Cartography is a code analyzer and errors on non-code.
 - **Config and data files** — JSON, YAML, TOML, `.jsonc`, `.csv`, `.log`. Cartography does not index these meaningfully.
-- **A single small named file** — just `read` it directly.
+- **A single small named prose/config file** — just `read` it directly. For
+  source code, follow the Cartography gate below.
 - **Literal text and messages** — exact strings, URLs, error messages, UI copy: use `grep`.
 - **File discovery by name** — use `glob`.
 
 Do not call `get_compressed_file` on a Markdown or config file: it summarizes code and will reject a plaintext file. Read the whole file instead.
+
+**Cartography gate for source code:** Do not use `read` as the first inspection
+tool for source code unless the file is under 100 LoC and the exact contents
+are required. First use the Cartography tool matching the question. Use
+`read` only after Cartography narrows the target or after Cartography errors or
+is unavailable. State the fallback reason when Cartography cannot be used.
 
 **Beware**: While you might sometimes need to read a code file using `read`, you should **always** make sure the file is really small (<100 LoC). You should always prefer understanding the structure of code files before reading them raw.
 

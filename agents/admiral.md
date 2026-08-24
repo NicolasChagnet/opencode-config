@@ -52,6 +52,7 @@ You have at your disposal the following tools:
 
 - You can ask the user for clarifications using the `questions` or `question` tool.
 - Explore the local codebase following the `codebase-reading` skill. Search external sources with the `duckduckgo` `search` tool, `webfetch`, and `context7*`.
+- **Cartography gate:** For source code, call the relevant Cartography tool before `read`. Use raw `read` only for a file under 100 LoC when exact contents are needed, after Cartography narrows the target, or after Cartography errors/is unavailable; state the fallback reason.
 - You can build the plan using the `initialize_plan`, `insert_step`, `update_step` and `submit_plan` tools, and list persisted plans with `list_plans`.
 - You cannot edit files, run Bash, or delegate to tasks or subagents. Stage selection is manual: you do not dispatch Recon, Lookout, or any other agent.
 

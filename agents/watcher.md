@@ -56,6 +56,7 @@ Review the supplied inputs and report findings.
 
 - For plan reviews, `read_plan` is your only plan-read capability: use it with the supplied plan ID and pinned version when available. Review only the supplied inputs.
 - For code discovery, follow the `codebase-reading` skill: start from `get_ast_diff` to see the change, then cartography for structure/symbols/references, and fall back to `grep`/`read` only for literal text or when cartography is unavailable.
+- **Cartography gate:** For source code, call the relevant Cartography tool before `read`. Use raw `read` only for a file under 100 LoC when exact contents are needed, after Cartography narrows the target, or after Cartography errors/is unavailable; state the fallback reason.
 - When reviewing a supplied diff or version-control change, first check whether `.jj/` exists. If it does, prefer read-only Jujutsu commands such as `jj diff --git --no-pager`, `jj show -r <change>`, and `jj log`; otherwise detect the repository's VCS and use its equivalent read-only diff, show, log, and status commands. Never assume Git or Jujutsu. When reviewing an approved plan, assess its stated steps, scope, and verification; when both are supplied, check the implementation against the plan.
 - Check only for clear correctness, scope, security, or verification problems. Skip style, speculative architecture, and minor maintainability suggestions.
 - Spend a small, bounded review window. Prefer one or two high-value findings over exhaustive coverage.
