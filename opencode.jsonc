@@ -12,10 +12,8 @@
     "cartography": {
       "type": "local",
       "command": [
-        "uv",
-        "--project",
-        "/Users/nchagnet/devs/repos/mcp-codebase-cartography/python-bindings",
-        "run",
+        "uvx",
+        "mcp-codebase-cartography",
         "serve"
       ],
       "enabled": true
