@@ -47,7 +47,6 @@ export function updateStep(root: string, planId: string, step: Step): Step {
   const plan = loadPlan(root, planId);
   if (!plan.steps[step.id]) throw new Error(`unknown step: ${step.id}`);
   const next = { ...plan.steps };
-  delete next[step.id];
   next[step.id] = validateStep(step, next);
   validateGraph(next);
   editable(plan);
