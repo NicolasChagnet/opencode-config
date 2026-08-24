@@ -37,6 +37,8 @@ Use `read` / `grep` / `glob` for everything cartography is not built for:
 
 Do not call `get_compressed_file` on a Markdown or config file: it summarizes code and will reject a plaintext file. Read the whole file instead.
 
+**Beware**: While you might sometimes need to read a code file using `read`, you should **always** make sure the file is really small (<100 LoC). You should always prefer understanding the structure of code files before reading them raw.
+
 ## Fallback
 
 Cartography is code-only and may be unavailable or unindexed. If it errors (e.g. `unsupported file type`, `not indexed`) or is not configured, switch to `read` / `grep` immediately. Do not retry cartography speculatively or repeat probes.

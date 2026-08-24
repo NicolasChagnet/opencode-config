@@ -75,11 +75,6 @@
       "agent": "jack",
       "template": "Split the current version-control change into self-consistent changes. First check whether `.jj/` exists; if it does, prefer Jujutsu and use `jj split`. Otherwise detect and use the repository's native VCS workflow.\nDo not split only by file; instead follow this plan:\n\n1. Summarize all changes.\n2. Estimate the number of coherent change clusters.\n3. Place each cluster in its own native VCS change, using recursive splitting or the equivalent workflow."
     },
-    "update-instructions": {
-      "description": "Generate or update the nearest applicable AGENTS.md.",
-      "agent": "jack",
-      "template": "Create or update the nearest applicable AGENTS.md for this project. First inspect the current project structure, development tooling, conventions, and existing AGENTS.md files. Preserve accurate existing guidance; do not overwrite user-authored rules without explaining the conflict. Record only durable facts: project structure, development guidelines/style, and recurring user preferences. Keep it concise and actionable. Validate every documented command or path when practical. If scope is unclear, ask whether to update the repository root AGENTS.md or a nested one. User request: $ARGUMENTS"
-    },
     "code-review": {
       "description": "Run a Plannotator code review",
       "template": "__opencode_plan_tools_code_review__"

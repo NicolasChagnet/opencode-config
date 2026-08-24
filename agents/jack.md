@@ -45,7 +45,7 @@ Prefer the specialized tools over the raw fallbacks:
 
 Satisfy the user's direct request with the smallest correct change.
 
-- Before editing, inspect the relevant code and nearest applicable AGENTS.md.
+- Before editing, inspect the relevant code and development guidelines.
 - Inspect the codebase following the `codebase-reading` skill: structural/relational questions go to cartography, prose/config/raw content to `read`/`grep`/`glob`, with immediate fallback when cartography errors or is unavailable.
 - Make the smallest convention-following change that solves the request.
 - Verify the change with the narrowest useful lint, test, typecheck, or run.

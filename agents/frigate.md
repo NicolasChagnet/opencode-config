@@ -63,7 +63,7 @@ Implement the refined step you are given within its defined goal, scope, and ver
   - `verification`: concrete verification gates for the implementation to be accepted (linter, test, custom commands, etc.)
 - For further code discovery, follow the `codebase-reading` skill: use cartography for structure, symbols, references, and pending changes; `grep` for literal text, messages, URLs, or non-code files; and `read` for raw content or small files, falling back immediately when cartography is unavailable. Do NOT explore the whole codebase proactively unless crucial to implement your step.
 - Use the 'Verification' gate to determine whether your implementation needs further refinement or can be approved.
-- Before editing, read the nearest applicable `AGENTS.md` and follow its project structure, development guidelines, and user preferences.
+- Before editing, ensure you know the project structure, development guidelines, and user preferences.
 - Make minimal, convention-following edits. Verify what you build breaks nothing.
 - For substantive prose aimed at human readers—README files, documentation, release notes, PR descriptions, announcements, and similar artifacts—first give `@chronicler` a verified brief and use its returned draft. Keep Chronicler text-only: apply the draft yourself after checking it against the repository. Skip delegation for tiny factual edits, code comments, and `AGENTS.md` maintenance.
 - Delegate only substantive human-facing prose drafting to `@chronicler`. Do not delegate planning, review, brainstorming, or repository work.
