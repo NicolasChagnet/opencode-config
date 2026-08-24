@@ -89,7 +89,11 @@ Steps run sequentially, in the order you insert them; there are no dependencies 
 - `id`: an identifier for the step.
 - `owned_paths`: estimated files (and possibly line ranges) of the codebase affected by this change.
 - `goal`: the scoped goal of this step.
-- `implementation`: what this step should implement, concisely.
+- `implementation`: what this step should implement, concisely. Follow this structure:
+    - Add: New structures, functions to be created.
+    - Remove: Code which must be removed, callers affected by that.
+    - Change: Code that must be updated, changed, by this implementation.
+    - Run: command to run, program to execute.
 - `verification`: concrete verification gates for the implementation to be accepted (linter, test, custom commands, etc...).
 
 Every step must declare:
@@ -116,7 +120,7 @@ User: I want to create a REST API server for a TODO app
 initialize_plan(
   "rest-api-todo", 
   "Create a REST API server for a TODO app", 
-  "Model tasks using a `Task` Pydantic model, stored inside a `tasks.json` file, accessed via a `TaskRepository` class. A FastAPI server serves the TODO app routes."
+  "Add: Model tasks using a `Task` Pydantic model, stored inside a `tasks.json` file, accessed via a `TaskRepository` class. A FastAPI server serves the TODO app routes."
 )
 ```
 - Then break down the plan into simple and clear steps
@@ -126,7 +130,7 @@ insert_step(
   "package-initialization",
   ["pyproject.toml"],
   "Initialize package with uv",
-  "Use uv to create a new package with required dependencies (FastAPI, pydantic) and development dependencies (pyrefly, ruff, pytest). Setup linting and testing options in the `pyproject.toml` file.",
+  "Run: `uv init --name todo_app`, `uv add fastapi pydantic` and `uv add pyrefly ruff pytest --dev`. Run: `uv pyrefly init`. Change: setup linters and testing in `pyproject.toml`. Run: `uv sync`."
   "`uvx ruff check todo_app` and `uvx pyrefly check todo_app` should pass."
 )
 
@@ -135,7 +139,7 @@ insert_step(
   "types-creation",
   ["todo_app/types.py"],
   "Create Task class",
-  "Implement the Pydantic type class with name, description, created_at, due_date, status fields.",
+  "Add: `Task` Pydantic class with name, description, created_at, due_date, status attributes.",
   "`uvx ruff check todo_app` and `uvx pyrefly check todo_app` should pass."
 )
 
@@ -144,7 +148,7 @@ insert_step(
   "repository-creation",
   ["todo_app/repository.py", "tests/test_repository.py"],
   "Create `TaskRepository` class",
-  "Generate the `TaskRepository` class to serialize/deserialize the Pydantic `Task` instances to the `tasks.json` file. Generate unit tests for this class.",
+  "Add: `TaskRepository` class with methods `load` and `save` to serialize/deserialize the Pydantic `Task` instances to the `tasks.json` file. Add: unit tests for this class.",
   "`uvx ruff check todo_app`, `uvx pyrefly check todo_app` and `uv run pytest` should pass."
 )
 
@@ -153,16 +157,16 @@ insert_step(
   "server-endpoints",
   ["todo_app/main.py", "tests/test_endpoints.py"],
   "Create fastapi endpoints",
-  "Generate the FastAPI REST endpoints for tasks, handling JSON payload <-> Pydantic Task <-> Repository calls. Generate unit tests for the endpoints.",
+  "Add: FastAPI REST endpoints for tasks, handling JSON payload <-> Pydantic Task <-> Repository calls. Add: unit tests for the endpoints.",
   "`uvx ruff check todo_app`, `uvx pyrefly check todo_app` and `uv run pytest` should pass."
 )
 
 insert_step(
   "rest-api-todo",
   "document",
-  ["README.md", "AGENTS.md"],
+  ["README.md"],
   "Document work",
-  "Write a README describing the application for users and the AGENTS file for future reference by agents.",
+  "Changed: README describing the application for users.",
   "None"
 )
 ```
