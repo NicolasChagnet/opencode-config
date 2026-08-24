@@ -41,6 +41,16 @@ describe("plan storage", () => {
     ]);
   });
 
+  test("updating a non-final step preserves insertion order", () => {
+    initializePlan(root, "demo", "ship the demo", "context");
+    insertStep(root, "demo", step("z"));
+    insertStep(root, "demo", step("a"));
+    insertStep(root, "demo", step("m"));
+    updateStep(root, "demo", { ...step("z"), owned_paths: ["changed.ts"] });
+    submitPlan(root, "demo");
+    expect(readPlan(root, "demo").steps.map(({ id }) => id)).toEqual(["z", "a", "m"]);
+  });
+
   test("parses Plannotator approval and feedback", () => {
     expect(parsePlannotatorAnnotate({ decision: "approved" })).toEqual({ approved: true });
     expect(parsePlannotatorAnnotate('{"approved":false,"feedback":" revise the goal "}')).toEqual({ approved: false, feedback: "revise the goal" });
